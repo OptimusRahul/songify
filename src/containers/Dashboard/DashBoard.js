@@ -18,6 +18,7 @@ class DashBoard extends Component {
         songs: null,
         isEmpty: true,
         currentSong: null,
+        currentTrackNo: 0,
         songsList: []
 
     } 
@@ -26,13 +27,15 @@ class DashBoard extends Component {
         let data = await playList();
         let url = [];
         data.data.tracks.data.map(song=> {
-            url.push(song.preview);
+            return url.push(song.preview);
         })
         this.setState({songs: data.data, isEmpty: false, songsList: url});
     }
 
-    swiperSongsHandler = name => {
-        this.setState({ currentSong: name })
+    swiperSongsHandler = value => {
+        if(value < 0) value = 0
+        if(value > this.state.songsList.length) value = this.state.songsList.length - 1;
+        this.setState({ currentSong: value, currentTrackNo: value})
     }
 
     searchHandler = (name) => {
@@ -44,6 +47,9 @@ class DashBoard extends Component {
     }
 
     render() {
+        let name;
+        if(this.state.songs !== null)
+            name = this.state.songs.tracks.data[this.state.currentTrackNo].title;
         return (
             <div className="main">
                 <header>
@@ -58,7 +64,11 @@ class DashBoard extends Component {
                     <div className="centerPane"> 
                         {this.state.isEmpty ? <Spinner /> : <Songs id={this.state.currentSong} songs={this.state.songs} swiperSongsHandler={this.swiperSongsHandler} />}
                         <CurrentSong name={this.swiperSongsHandler} />
-                        <Footer url={this.state.currentSong === null ? this.state.songsList[0] : this.state.songsList[this.state.currentSong]}/>
+                        <Footer 
+                            url={this.state.currentSong === 0 ? this.state.songsList[0] : this.state.songsList[this.state.currentSong]}
+                            currentTrackNo={this.state.currentTrackNo}
+                            swiperSongsHandler={this.swiperSongsHandler}
+                            name={name}/>
                     </div>
                     <div className="rightPane">
                         {this.state.isEmpty ? <Spinner /> : <List songs={this.state.songs} swiperSongsHandler={this.swiperSongsHandler} />}

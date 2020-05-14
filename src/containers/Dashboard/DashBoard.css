@@ -10,13 +10,16 @@
 .leftPane{
     display: flex;
     min-width: 165px;
+    max-height: 32em;
+    margin: 1em 0;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .centerPane{
     max-width: 60em;
-    max-height: 20em;
+    max-height: 19em;
     padding: 10px;
+    margin: 1em 1em;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     flex:2;
     flex-flow: column;
@@ -26,7 +29,8 @@
 .rightPane{
     display: flex;
     width: 100%;
-    max-height: 33em;
+    margin: 1em 0;
+    max-height: 32em;
     overflow-y: scroll;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }

@@ -3,10 +3,8 @@ import React, { Component } from 'react';
 import Swiper from 'swiper';
 import  'swiper/css/swiper.min.css';
 import './Songs.css';
-import CurrentSong from './CurrentSong/CurrentSong';
-import { Button } from 'react-bootstrap';
 
-class songs extends Component {
+class Songs extends Component {
 
     constructor(props){
         super(props);
@@ -49,8 +47,6 @@ class songs extends Component {
     }
 
     render(){
-        let slide = null;
-        console.log('ssss',this.props.id)
         if(this.props.id !== null)
             this.onClickHandlers(this.props.id)
             
@@ -76,7 +72,7 @@ class songs extends Component {
 
 };
 
-export default songs;
+export default Songs;
 /*
 <audio className="audio" controls src={song.preview}>Click Here</audio>
 */
