@@ -8,7 +8,7 @@ import Songs from '../../components/Songs/Songs';
 import TopPane from '../../components/NavigationPane/TopPane/TopPane';
 import Profile from '../../components/NavigationPane/SidePane/Profile/ProfilePanel';
 import List from '../../components/NavigationPane/SidePane/List/List';
-import Footer from '../../components/Footer/Footer';
+import Footer from '../../components/Player/Player';
 
 import './DashBoard.css';
 
@@ -32,7 +32,7 @@ class DashBoard extends Component {
     }
 
     swiperSongsHandler = name => {
-        this.setState({currentSong: name})
+        this.setState({ currentSong: name })
     }
 
     searchHandler = (name) => {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import './Footer.css';
+import './Player.css';
 
-class footer extends Component {
+class player extends Component {
 
     constructor(props){
         super(props);
@@ -22,7 +22,7 @@ class footer extends Component {
 
     playSongHandler = () => {
         if(this.state.url !== this.props.url){
-            this.setState({ isPlayed: false, url: this.props.url })
+            this.setState({ url: this.props.url })
             this.audio.src = this.props.url;
         }
         this.setState({ playing: true, isPlayed: true});
@@ -39,8 +39,8 @@ class footer extends Component {
     }
 
     render() {
-
-
+        if(this.state.url !== null && this.state.url !== this.props.url)
+            this.playSongHandler();
         return (
             <div>
                 <button 
@@ -51,7 +51,7 @@ class footer extends Component {
     }
 }
 
-export default footer;
+export default player;
 /*
 
 <div className='container'>Place sticky footer content here.</div>
