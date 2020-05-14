@@ -1,0 +1,6 @@
+.List{
+    display: block;
+    align-content: flex-start;
+    flex-flow: column;
+    justify-content: space-between; 
+}

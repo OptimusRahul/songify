@@ -1,0 +1,23 @@
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tab{
+    display: block;
+    margin: 10px 0;
+    width: 100%;
+    text-align: left;
+    padding: 2px;
+    transition: 0.3s;
+}
+
+.tab:hover{
+    animation: 3s linear .1s colorIt;
+    box-shadow: rgba(53, 52, 52, 0.2);
+    padding: 1px;
+}
