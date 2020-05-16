@@ -16,11 +16,39 @@
 }
 
 .btn-container{
-    display: flex;
-    justify-content: center;
-    flex-flow: row;
+    display: block;
+    float: left;
+    margin: auto;
 }
 
-.btn-style {
-    margin: 2px;
+.icon-container {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: #AAA;
+    margin: 8px;
+    float: left;
+}
+
+.position-left{
+    margin: 10px;
+}
+
+.icon-container__center {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: #AAA;
+    margin: 1px;
+    float: left;
+}
+
+.position-center{
+    margin-left: 30%;
+    margin-top: 20%;
+}
+
+.position-right{
+    margin: 10px;
+    padding-left: 5px;
 }

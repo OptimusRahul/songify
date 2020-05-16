@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { playList } from '../../api/index';
 
-import CurrentSong from '../../components/Songs/CurrentSong/CurrentSong';
 import Spinner from '../../components/UI/Loader/Loader';
 import Songs from '../../components/Songs/Songs';
 import TopPane from '../../components/NavigationPane/TopPane/TopPane';
@@ -14,13 +13,12 @@ import './DashBoard.css';
 
 class DashBoard extends Component {
     state = {
-        categories: ['All Songs', 'Your Favorite', 'Recently Played'],
+        categories: ['All Songs', 'Your Favorites', 'Recently Played'],
         songs: null,
         isEmpty: true,
         currentSong: null,
         currentTrackNo: 0,
         songsList: []
-
     } 
      
     async componentDidMount(){
@@ -63,12 +61,11 @@ class DashBoard extends Component {
                         </div>
                     <div className="centerPane"> 
                         {this.state.isEmpty ? <Spinner /> : <Songs id={this.state.currentSong} songs={this.state.songs} swiperSongsHandler={this.swiperSongsHandler} />}
-                        <CurrentSong name={this.swiperSongsHandler} />
-                        <Footer 
-                            url={this.state.currentSong === 0 ? this.state.songsList[0] : this.state.songsList[this.state.currentSong]}
+                        {this.state.songsList.length === 0 ? <Spinner /> : <Footer 
+                            url={this.state.currentSong === null ? this.state.songsList[0] : this.state.songsList[this.state.currentSong]}
                             currentTrackNo={this.state.currentTrackNo}
                             swiperSongsHandler={this.swiperSongsHandler}
-                            name={name}/>
+                            name={name}/>}
                     </div>
                     <div className="rightPane">
                         {this.state.isEmpty ? <Spinner /> : <List songs={this.state.songs} swiperSongsHandler={this.swiperSongsHandler} />}

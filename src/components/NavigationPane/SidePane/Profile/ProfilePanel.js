@@ -1,14 +1,16 @@
 import React from 'react';
 
-//import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import Tab from './Tab/Tab';
+import Tab from '../../../UI/Tab/Tab';
 import './ProfilePanel.css'
 
 const profile = props => {
     return (
         <div className="sideMenu">
             {props.profileMenu.map((item, i) => (
-                <Tab name={item} key={i} />
+                <div className="holder">
+                    <img src={require(`../../../../assests/icons/Navigation-icons/${item}.png`)} width="20px" height="20px"/> &nbsp;
+                    <span><Tab name={item} key={i} /></span>
+                </div>
             ))}
         </div>
         /*<ListGroup defaultActiveKey="#link1">

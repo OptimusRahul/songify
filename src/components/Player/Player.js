@@ -8,7 +8,7 @@ const Track = styled.div`
     height: 100%;
     background-color: #6bccf9;
     border-radius: 8px;
-    transition: width 0.3s ease-in-out;
+    transition: width  ease-in-out;
 `;
 
 class Player extends Component {
@@ -19,27 +19,20 @@ class Player extends Component {
             playing: false,
             isPlayed: false,
             url: null,
-            currDuration: 0,
             percentage: 0,
-            seekBar: 0
         }
         this.setState({url: this.props.url});
         this.audio.src = this.props.url;
-        this.audioSeekBar = this.audio.
     }
 
     audio = new Audio(this.props.url);
-
-    getCurrentDuration = () => {
-        const percentage = ((this.audio.currentTime / this.audio.duration) * 100).toFixed(2);
-        this.setState({ percentage});
-    }
 
     previousSongHandler = (value) => value - 1;
 
     nextSongHandler = (value) => value + 1;
 
     audioController = () => {
+        this.currentTimeInterval = null;
         if(!this.state.isPlayed){
             if(this.state.url !== this.props.url){
                 this.setState({ url: this.props.url })
@@ -47,43 +40,43 @@ class Player extends Component {
             }
             this.setState({ playing: true, isPlayed: true});
             this.audio.play();
+            this.audio.addEventListener('timeupdate', () => {
+                if(this.audio != null){
+                    this.setState({ percentage: Math.floor((this.audio.currentTime / this.audio.duration) * 100) });
+                }
+            }, true)
         } else {
             this.setState({ playing:false, isPlayed: false });
+            clearInterval(this.currentTimeInterval);
             this.audio.pause();
         }
     }
 
     render() {
-        if(this.state.url !== this.props.url)
+        if(this.state.url !== this.props.url && this.state.url !== null){
             this.audioController();
+        }
+        
         return (
             <div className="player" aria-controls='Audio Player' role='region'>
                 <div style={{display: 'flex', justifyContent: 'center', }}>
                     <h3>{this.props.name}</h3>
                 </div>
-                <div
-                    className="progressBar"
-                    onKeyDown={this.keyDown}
-                    onClick={this.onClick}
-                    tabIndex="0"
-                    aria-valuemax="100"
-                    aria-valuemin="0"
-                    aria-valuenow={Math.round(percentage)}
-                    role="slider"
-                    ref={this.audioSeekBar}     >
-                    <Track 
-                        percentage={this.state.percentage} 
-                        aria-valuenow={this.state.percentage}
-                        ref={this.getCurrentDuration}/>
+                <div className = "progressBar">
+                    <Track percentage={this.state.percentage} />
                 </div>
+                <div className="time"> {/*formatTime(currentTime)} / {formatTime(totalTime)*/}</div>
                 <div className="btn-container">
-                    <button className="btn-style" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}>Previous</button>
-                    <button className="btn-style"
-                        aria-controls="audio1" 
-                        onClick={this.audioController}
-                        aria-label={!this.state.isPlaying || this.state.isPlaying === null ? 'Play' : 'Pause'} 
-                        onTimeUpdateCapture={() => this.getCurrentDuration}>{this.state.playing ? 'Pause' : 'Play'}</button>
-                    <button className="btn-style" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}>Next</button>
+                    <div className="icon-container">
+                        <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px' }} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
+                    </div>
+                    <div className="icon-container__center">
+                        <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"} style={{ fontSize: '35px'}}
+                            aria-controls="audio1" onClick={this.audioController}></i>
+                    </div>
+                    <div className="icon-container">
+                        <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
+                    </div>
                 </div>
             </div>
         );

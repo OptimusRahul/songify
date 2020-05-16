@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Pagination } from 'react-bootstrap';
-import Tab from '../Profile/Tab/Tab';
+import Tab from '../../../UI/Tab/Tab';
 import './List.css';
 
 const list = props => {

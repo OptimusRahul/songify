@@ -1,5 +1,27 @@
 .sideMenu{
     padding: 10px;
-    margin-right: 20px;
+    margin-right: 20;
     margin-bottom: 23.6em;
 }
+
+.holder {
+    display: flex;
+    align-items: center;
+}
+
+.holder:hover{
+    transition: 0.3s;
+    border: 1px solid orange;
+    box-shadow: rgba(53, 52, 52, 0.2);
+}
+
+/* img{
+    float: left;
+    display: inline-block;
+}
+
+span{
+    float: left;
+    display: inline-block;
+
+} */
