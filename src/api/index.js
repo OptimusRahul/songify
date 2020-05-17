@@ -22,3 +22,13 @@ export const playList = async() => {
             return error;
         });
 }
+
+export const searchList = async(query) => {
+    return await axios.get(`${baseURL}/search/?q=${query}`, headers)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            return error;
+        });
+}

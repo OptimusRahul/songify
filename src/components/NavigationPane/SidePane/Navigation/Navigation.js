@@ -1,14 +1,14 @@
 import React from 'react';
 
 import Tab from '../../../UI/Tab/Tab';
-import './ProfilePanel.css'
+import './Navigation.css'
 
 const profile = props => {
     return (
         <div className="sideMenu">
             {props.profileMenu.map((item, i) => (
-                <div className="holder">
-                    <img src={require(`../../../../assests/icons/Navigation-icons/${item}.png`)} width="20px" height="20px"/> &nbsp;
+                <div className="holder" onClick={() => props.optionSelectHandler(item)}>
+                    <img src={require(`../../../../assests/icons/Navigation-icons/${item}.png`)} alt={item} width="20px" height="20px"/> &nbsp;
                     <span><Tab name={item} key={i} /></span>
                 </div>
             ))}

@@ -11,7 +11,7 @@ const topPane = props => (
                 <img alt="" src="/logo.svg" width="30" height="30" className="d-inline-block align-top"/>{' '} Songify
             </Navbar.Brand>
             <Form inline className='Form'>
-                <SearchBar />
+                <SearchBar searchHandler={props.searchHandler} />
             </Form>
         </Navbar>
     </div>

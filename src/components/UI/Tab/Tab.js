@@ -5,7 +5,7 @@ import './Tab.css';
 const tab = props => {
     return (
         <div className="tab" id={props.id}>
-            <a key={props.id} onClick={() => props.optionSelectHandler(props.name)}>
+            <a href={props.id} key={props.id}>
                 {props.name}
             </a>
         </div>
