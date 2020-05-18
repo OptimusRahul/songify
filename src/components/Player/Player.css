@@ -16,6 +16,11 @@
     color: red;
 }
 
+.text {
+    display: flex;
+    justify-content: center;
+}
+
 .progressBar {
     display: block;
     margin: 2em auto;
@@ -57,11 +62,15 @@ span{
     background-color: orange;
     margin: 1px;
     float: left;
+    font-size: 35px; 
+    color: white;
 }
 
 .position-center{
     margin-left: 30%;
     margin-top: 20%;
+    font-size: 35px;
+    color: white;
 }
 
 .position-right{

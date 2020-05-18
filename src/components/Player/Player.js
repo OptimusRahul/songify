@@ -81,35 +81,33 @@ class Player extends Component {
     }
 
     render() {
-        if(this.state.url !== this.props.trackDetails.url && this.state.url !== null){
+        if(this.state.url !== this.props.trackDetails.url && this.state.url !== null && this.state.isPlayed){
             this.audioController();
         }
         
         return (
-            <div className="player" aria-controls='Audio Player' role='region'>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <h3>{this.props.trackDetails.title}</h3>
-                    <div className="">
+            <div>
+                <div className="player" aria-controls='Audio Player' role='region'>
+                    <div className="text">
+                        <h3>{this.props.trackDetails.title}</h3>
                         <i className="fa fa-heart-o heart" 
-                           aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
+                            aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
                     </div>
-                </div>
-                <div className = "progressBar">
-                    <div>
+                    <div className = "progressBar">
                         <Track percentage={this.state.percentage} />
                         {formatTime(this.audio.currentTime)} / {formatTime(this.audio.duration)}
                     </div>
-                </div>
-                <div className="btn-container">
-                    <div className="icon-container">
-                        <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
-                    </div>
-                    <div className="icon-container__center">
-                        <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"} style={{ fontSize: '35px', color: 'white'}}
-                            aria-controls="audio1" onClick={this.audioController}></i>
-                    </div>
-                    <div className="icon-container">
-                        <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px', color: 'white'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
+                    <div className="btn-container">
+                        <div className="icon-container">
+                            <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
+                        </div>
+                        <div className="icon-container__center">
+                            <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"} style={{ }}
+                                aria-controls="audio1" onClick={this.audioController}></i>
+                        </div>
+                        <div className="icon-container">
+                            <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px', color: 'white'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,3 +116,23 @@ class Player extends Component {
 }
 
 export default Player;
+
+/*
+<div className="mPlayer">
+                    <div className="text">
+                        <h3>{this.props.trackDetails.title}</h3>
+                        <i className="fa fa-heart-o heart" 
+                            aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
+                    </div>
+                    <div className="icon-container">
+                        <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
+                    </div>
+                    <div className="icon-container__center">
+                        <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"}
+                            aria-controls="audio1" onClick={this.audioController}></i>
+                    </div>
+                    <div className="icon-container">
+                            <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px', color: 'white'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
+                        </div>
+                </div>  
+*/

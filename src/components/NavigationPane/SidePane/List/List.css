@@ -1,6 +1,13 @@
+.Header {
+    
+}
+
 .List{
-    display: block;
-    align-content: flex-start;
-    flex-flow: column;
-    justify-content: space-between; 
+    position: relative;
+}
+
+.List:hover{
+    transition: 0.3s;
+    border: 1px solid orange;
+    box-shadow: rgba(53, 52, 52, 0.2);
 }

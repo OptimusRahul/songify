@@ -1,21 +1,22 @@
 import React from 'react';
 
-import { Pagination } from 'react-bootstrap';
 import Tab from '../../../UI/Tab/Tab';
 import './List.css';
 
 const list = props => {
     return (
-        <Pagination>
-            <div className="List">
+        <div>
+            <div className="Header">
                 <h4>Songs List</h4>
+            </div>
+            <div className="List">
                 {props.songs.map((song, i) => (
-                    <form onClick={() => props.swiperSongsHandler(i)}>
+                    <form className="List" onClick={() => props.swiperSongsHandler(i)} key={i}>
                         <Tab name={song.title} key={i} />
                     </form> 
                 ))}
             </div>
-        </Pagination>
+        </div>
     )
 };
 

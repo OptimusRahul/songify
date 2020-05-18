@@ -1,4 +1,4 @@
-.songs {
+.swiper {
     background-color: #fff;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -9,8 +9,8 @@
 
 .swiper-container {
     width: 100%;
-    padding: 50px;
     overflow: hidden;
+    padding: 3em 0;
 }
 
 .swiper-slide {

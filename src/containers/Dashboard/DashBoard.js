@@ -7,8 +7,7 @@ import Swiper from '../../components/Swiper/Swiper';
 import TopPane from '../../components/NavigationPane/TopPane/TopPane';
 import Profile from '../../components/NavigationPane/SidePane/Navigation/Navigation';
 import List from '../../components/NavigationPane/SidePane/List/List';
-import Footer from '../../components/Player/Player';
-
+import Player from '../../components/Player/Player';
 import './DashBoard.css';
 
 class DashBoard extends Component {
@@ -64,38 +63,55 @@ class DashBoard extends Component {
         if(type === 'All Songs') {
             this.fetchSongsHandler();
         } else if(type === 'Yours Favorite'){
-            this.setState({ trackDetails: JSON.parse(localStorage.getItem('Favorites')), mode: 'favorites' });
+            if(!localStorage.getItem('Favorites')){
+                alert('No');
+            } else {
+                this.setState({ trackDetails: JSON.parse(localStorage.getItem('Favorites')), mode: 'favorites' });
+            }
 
         } else if(type === 'Recently Played'){
-            this.setState({ trackDetails: JSON.parse(localStorage.getItem('Recent')), mode: 'recent' });
+            if(!localStorage.getItem('Recent')){
+                alert('No');
+            } else {
+                this.setState({ trackDetails: JSON.parse(localStorage.getItem('Recent')), mode: 'recent' });
+            }
         }
     }
 
+
     render() {
+        let NavBar = <TopPane searchHandler={this.searchHandler}/>;
+        let ProfileMenu = <Profile profileMenu={this.state.categories} optionSelectHandler={this.optionSelectHandler} />
+        let SwiperPane = null, PlayerPane=null, RightPane = null;
+        if(this.state.isEmpty || this.state.trackDetails === null){
+            SwiperPane = <Spinner />
+            PlayerPane = <Spinner />
+            RightPane = <Spinner />
+        } else  {
+            SwiperPane = <Swiper id={this.state.currentSong} songs={this.state.trackDetails} 
+                             swiperSongsHandler={this.swiperSongsHandler} mode={this.state.mode}/>
+            PlayerPane = <Player trackDetails={this.state.currentSong === null ? this.state.trackDetails[0] : this.state.trackDetails[this.state.currentSong]}
+                             currentTrackNo={this.state.currentTrackNo} swiperSongsHandler={this.swiperSongsHandler} />
+            RightPane = <List songs={this.state.trackDetails} swiperSongsHandler={this.swiperSongsHandler} />
+        }
+
         return (
             <div className="main">
                 <header>
-                    <TopPane searchHandler={this.searchHandler}/>
+                    {NavBar}
                 </header>
                 <div className="mainSection">
                     <div className="leftPane"> 
-                        <Profile 
-                            profileMenu={this.state.categories}
-                            optionSelectHandler={this.optionSelectHandler} /> 
-                        </div>
+                       {ProfileMenu}
+                    </div>
                     <div className="centerPane"> 
-                        {this.state.isEmpty ? 
-                            <Spinner /> : 
-                            <Swiper 
-                                id={this.state.currentSong} songs={this.state.trackDetails} 
-                                swiperSongsHandler={this.swiperSongsHandler} mode={this.state.mode}/>}
-                        {this.state.trackDetails.length === 0 ? <Spinner /> : <Footer 
-                            trackDetails={this.state.currentSong === null ? this.state.trackDetails[0] : this.state.trackDetails[this.state.currentSong]}
-                            currentTrackNo={this.state.currentTrackNo}
-                            swiperSongsHandler={this.swiperSongsHandler} />}
+                        {SwiperPane}
+                        <div className="playerDesktop">
+                            {PlayerPane}
+                        </div>
                     </div>
                     <div className="rightPane">
-                        {this.state.isEmpty ? <Spinner /> : <List songs={this.state.trackDetails} swiperSongsHandler={this.swiperSongsHandler} />}
+                        {RightPane}
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@ const profile = props => {
     return (
         <div className="sideMenu">
             {props.profileMenu.map((item, i) => (
-                <div className="holder" onClick={() => props.optionSelectHandler(item)}>
+                <div className="holder" onClick={() => props.optionSelectHandler(item)} key={i}>
                     <img src={require(`../../../../assests/icons/Navigation-icons/${item}.png`)} alt={item} width="20px" height="20px"/> &nbsp;
                     <span><Tab name={item} key={i} /></span>
                 </div>

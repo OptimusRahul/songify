@@ -1,0 +1,36 @@
+.Mobile-Only{
+    display: none;
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (min-width:801px)  { 
+    .Desktop-Only{
+        display: none;
+    }
+
+    .Mobile-Only {
+        display: flex;
+    }
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (min-width:1025px) { 
+    .Desktop-Only{
+        display: flex;
+    }
+
+    .Mobile-Only {
+        display: none;
+    }
+}
+
+ /* hi-res laptops and desktops */
+@media (min-width:1281px) { 
+    .Desktop-Only{
+        display: flex;
+    }
+
+    .Mobile-Only {
+        display: none;
+    }
+}

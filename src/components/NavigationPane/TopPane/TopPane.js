@@ -2,19 +2,17 @@ import React from 'react';
 
 import { Navbar, Form } from 'react-bootstrap';
 import SearchBar from '../../UI/SearchBar/SearchBar';
+import Logo from '../../Logo/Logo';
+
 import './TopPane.css';
 
 const topPane = props => (
-    <div>
-        <Navbar bg="light" variant="light">
-            <Navbar.Brand href="#home">
-                <img alt="" src="/logo.svg" width="30" height="30" className="d-inline-block align-top"/>{' '} Songify
-            </Navbar.Brand>
-            <Form inline className='Form'>
+    <Navbar bg="light" variant="light">
+        <Logo className="Logo" />
+        <Form inline className='Form'>
                 <SearchBar searchHandler={props.searchHandler} />
-            </Form>
-        </Navbar>
-    </div>
+        </Form>
+    </Navbar>
 );
 
 export default topPane;

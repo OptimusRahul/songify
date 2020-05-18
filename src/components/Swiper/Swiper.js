@@ -58,9 +58,7 @@ class Songs extends Component {
     }
 
     render(){
-        console.log(this.state.mode, ' - ', this.props.mode);
         if(this.state.mode !== this.props.mode){
-            console.log('Inside');
             this.modeHandler();
         }
         
@@ -69,21 +67,19 @@ class Songs extends Component {
         }
         
         return (
-            <div className="songs">
-                <form>
-                    <div className="swiper-container" onScroll={this.onClickHandler}>
-                        <div className="swiper-wrapper" onClick={(e) => this.props.swiperSongsHandler(this.Swiper.activeIndex)}>  
-                            {this.props.songs.map((song, i) => (    
-                                <div onClick={this.onClickHandler} className="swiper-slide" style={{backgroundImage: `url(${song.coverImg})`}} key={i} value={song.coverImg}>
-                                    <h1 style={{display: 'none'}}>{song.title}</h1>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="swiper-button-prev"></div>
-                        <div className="swiper-button-next"></div>
-                        <div className="swiper-scrollbar"></div>
+            <div className="swiper">
+                <div className="swiper-container" onScroll={this.onClickHandler}>
+                    <div className="swiper-wrapper" onClick={(e) => this.props.swiperSongsHandler(this.Swiper.activeIndex)}>  
+                        {this.props.songs.map((song, i) => (    
+                            <div onClick={this.onClickHandler} className="swiper-slide" style={{backgroundImage: `url(${song.coverImg})`}} key={i} value={song.coverImg}>
+                                <h1 style={{display: 'none'}}>{song.title}</h1>
+                            </div>
+                        ))}
                     </div>
-                </form>
+                    <div className="swiper-button-prev"></div>
+                    <div className="swiper-button-next"></div>
+                    <div className="swiper-scrollbar"></div>
+                </div>
             </div>
         )
     }
