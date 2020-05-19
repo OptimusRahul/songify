@@ -23,7 +23,8 @@ class Player extends Component {
             url: null,
             percentage: 0,
             currentTime: 0,
-            songDuration: 0
+            songDuration: 0,
+            favSong: null
         }
         this.setState({url: this.props.trackDetails.url, songDuration: this.audio.duration });
         this.audio.src = this.props.trackDetails.url;
@@ -32,14 +33,21 @@ class Player extends Component {
     audio = new Audio(this.props.url);
     recentData = [];
     favoriteSongs = [];
+    heartIcon = 'fa fa-heart-o';
 
     favouriteSongsHandler = () => {
         if(localStorage.getItem('Favorites') !== null && this.favoriteSongs.length === 0){
             Array.from(JSON.parse(localStorage.getItem('Favorites')), favorites => this.favoriteSongs.push(favorites));
         }
-        if(!this.favoriteSongs.includes(this.props.trackDetails)){
-            this.favoriteSongs.push(this.props.trackDetails);
-            localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+        if(this.heartIcon === 'fa fa-heart-o'){
+            this.heartIcon = 'fa fa-heart';
+            if(!this.favoriteSongs.includes(this.props.trackDetails)){
+                this.favoriteSongs.push(this.props.trackDetails);
+                localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+            }
+        } else {
+            this.heartIcon = 'fa fa-heart';
+            
         }
     }
 
@@ -79,7 +87,7 @@ class Player extends Component {
             this.audio.pause();
         }
     }
-
+//<i class="fa fa-heart" aria-hidden="true"></i>
     render() {
         if(this.state.url !== this.props.trackDetails.url && this.state.url !== null && this.state.isPlayed){
             this.audioController();
@@ -93,9 +101,13 @@ class Player extends Component {
                         <i className="fa fa-heart-o heart" 
                             aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
                     </div>
-                    <div className = "progressBar">
-                        <Track percentage={this.state.percentage} />
-                        {formatTime(this.audio.currentTime)} / {formatTime(this.audio.duration)}
+                    <div className="progress-time">
+                        <div>
+                            {formatTime(this.audio.currentTime)} / {formatTime(this.audio.duration)}
+                        </div>
+                        <div className = "progressBar">
+                            <Track percentage={this.state.percentage} />
+                        </div>
                     </div>
                     <div className="btn-container">
                         <div className="icon-container">

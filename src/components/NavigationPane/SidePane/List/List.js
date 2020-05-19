@@ -11,7 +11,7 @@ const list = props => {
             </div>
             <div className="List">
                 {props.songs.map((song, i) => (
-                    <form className="List" onClick={() => props.swiperSongsHandler(i)} key={i}>
+                    <form class="current" onClick={() => props.swiperSongsHandler(i)} key={i}>
                         <Tab name={song.title} key={i} />
                     </form> 
                 ))}

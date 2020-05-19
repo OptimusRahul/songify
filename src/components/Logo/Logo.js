@@ -5,7 +5,7 @@ import './Logo.css';
 
 const logo = props => (
     <Navbar.Brand href="#home" className="Logo">
-        <img alt="" src="/logo.svg" width="30" height="30" className="d-inline-block align-top"/>{' '} Songify
+        <img alt="Logo" src={require('../../assests/icons/Logo/Logo.png')} width="30" height="30" className="d-inline-block align-top"/>{' '}<span className="HeadingText"> Songify </span>
     </Navbar.Brand>
 );
 

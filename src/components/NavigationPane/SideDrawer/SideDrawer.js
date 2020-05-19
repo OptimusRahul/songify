@@ -1,28 +1,47 @@
 import React from 'react';
 
-import Logo from '../../Logo/Logo';
-import './SideDrawer.css';
-import Backdrop from '../../UI/Backdrop/Backdrop';
 import Tab from '../../UI/Tab/Tab';
+import './SideDrawer.css';
+import Logo from '../../Logo/Logo';
 
-const sideDrawer = (props) => {
-    return (
-        <div>
-            <Backdrop show={props.open} clicked={props.closed}/>
-            <div className={props.open ? "SideDrawer Open" : "Open Close"} onClick={props.closed}> 
-                <div className="Logo">
-                    <Logo/>
-                </div>
-                <div>
-                    {props.profileMenu.map((item, i) => (
-                        <div className="holder" onClick={() => props.optionSelectHandler(item)} key={i}>
-                            <img src={require(`../../../assests/icons/Navigation-icons/${item}.png`)} alt={item} width="20px" height="20px"/> &nbsp;
-                            <span><Tab name={item} key={i} /></span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+const sideDrawer = props => {
+    let drawerClasses = ['side-drawer', props.side];
+    if(props.show){
+        drawerClasses.push('open');
+    }
+
+    let sideDrawerContent;
+    if(props.side === 'left'){ 
+        sideDrawerContent = <div>
+                                <Logo />
+                                {props.profileMenu.map((item, i) => (
+                                    <div className="holder" onClick={() => props.optionSelectHandler(item)} key={i}>
+                                        <img src={require(`../../../assests/icons/Navigation-icons/${item}.png`)} alt={item} width="20px" height="20px"/> &nbsp;
+                                        <span><Tab name={item} key={i} /></span>    
+                                    </div>
+                                ))}
+                            </div>
+    }
+
+    if(props.side === 'right'){
+        sideDrawerContent = <div>
+                                <div className="sHeader">
+                                    <h4>Songs List</h4>
+                                </div>
+                                <div className="scroll">
+                                    {props.songs.map((song, i) => (
+                                        <form className="List" onClick={() => props.swiperSongsHandler(i)} key={i}>
+                                            <Tab name={song.title} key={i} />
+                                        </form> 
+                                    ))}
+                                </div>
+                            </div>
+    }
+
+    return(
+        <nav className={drawerClasses.join(' ')}>
+            {sideDrawerContent}
+        </nav>
     );
 };
 

@@ -1,11 +1,10 @@
 .main{
-    margin: 0;
+    margin-top: 64px;
 }
 
 .mainSection{
     display: flex;
     flex-direction: row;
-    width: 100%;
 }
 
 .leftPane{
@@ -32,6 +31,27 @@
     width: 100%;
     margin: 1em 0;
     max-height: 32em;
-    overflow-y: scroll;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+@media only screen and (max-width: 1024px){
+
+    .leftPane{
+        display: none;
+    }
+
+    .rightPane{
+        display: none;
+    }
+
+    body {
+        background: #8E0E00;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+           
+    }
+
+    .centerPane {
+        background: white;
+    }
 }

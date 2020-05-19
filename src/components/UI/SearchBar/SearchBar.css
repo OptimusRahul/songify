@@ -1,4 +1,16 @@
 .Search{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    width: 100%;
 }
+
+@media (max-width: 480px){
+    .Search input{
+        width: 120px;
+    }
+
+    .Search button {
+        width: 30px;
+    }
+}
+  

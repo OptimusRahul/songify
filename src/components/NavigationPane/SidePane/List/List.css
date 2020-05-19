@@ -1,12 +1,10 @@
-.Header {
-    
-}
-
 .List{
-    position: relative;
+    max-height: 29.5em;
+    box-sizing: border-box;
+    overflow-y: scroll;
 }
 
-.List:hover{
+.current:hover{
     transition: 0.3s;
     border: 1px solid orange;
     box-shadow: rgba(53, 52, 52, 0.2);

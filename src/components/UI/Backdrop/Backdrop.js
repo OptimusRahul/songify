@@ -3,11 +3,9 @@ import React from 'react';
 import './Backdrop.css';
 
 const backdrop = (props) => {
-    let back = null;
-    if(props.show)
-        back = <div className="Backdrop" onClick={props.clicked}></div> 
+    let backdropClasses = `Backdrop ${props.side}`
     return ( 
-        {back}
+        <div className={backdropClasses} onClick={props.click} style={{}}></div>
     );
 };
 

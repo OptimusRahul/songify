@@ -50,10 +50,12 @@ class Songs extends Component {
     }
 
     onClickHandler = () => {
+        this.Swiper.updateProgress();
         this.Swiper.slideTo(this.Swiper.clickedIndex);
     }
 
     onClickHandlers = (id) => {
+        this.Swiper.updateProgress();
         this.Swiper.slideTo(id);
     }
 

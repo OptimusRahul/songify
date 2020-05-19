@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 
 import { playList, searchList } from '../../api/index';
 
+import Backdrop from '../../components/UI/Backdrop/Backdrop';
 import Spinner from '../../components/UI/Loader/Loader';
 import Swiper from '../../components/Swiper/Swiper';
-import TopPane from '../../components/NavigationPane/TopPane/TopPane';
+import Toolbar from '../../components/NavigationPane/Navbar/Navbar';
 import Profile from '../../components/NavigationPane/SidePane/Navigation/Navigation';
 import List from '../../components/NavigationPane/SidePane/List/List';
 import Player from '../../components/Player/Player';
+import SideDrawer from '../../components/NavigationPane/SideDrawer/SideDrawer';
 import './DashBoard.css';
 
 class DashBoard extends Component {
@@ -17,7 +19,9 @@ class DashBoard extends Component {
         currentSong: null,
         currentTrackNo: 0,
         trackDetails: [],
-        mode: 'all'
+        mode: 'all',
+        sideDrawerOpen: false,
+        sideDrawerSide: 'left'
     } 
      
     async componentDidMount(){
@@ -78,9 +82,32 @@ class DashBoard extends Component {
         }
     }
 
+    drawerToggleClickHandler = (value) => {
+        console.log(value);
+        this.setState((prevState) => {
+            return { sideDrawerOpen: !prevState.sideDrawerOpen, sideDrawerSide: value};
+        })
+    }
+
+    backdropClickHandler = () => {
+        this.setState({ sideDrawerOpen: false });
+    }
 
     render() {
-        let NavBar = <TopPane searchHandler={this.searchHandler}/>;
+        let sideDrawer = <SideDrawer 
+                            show={this.state.sideDrawerOpen}  side={this.state.sideDrawerSide}
+                            profileMenu={this.state.categories} optionSelectHandler={this.optionSelectHandler}/>;
+        let backdrop;
+        if(this.state.sideDrawerOpen){
+            backdrop = <Backdrop click={this.backdropClickHandler} side={this.state.sideDrawerSide}/>
+        }
+
+        if(this.state.sideDrawerSide === 'right'){
+            sideDrawer = <SideDrawer 
+                            show={this.state.sideDrawerOpen}  side={this.state.sideDrawerSide}
+                            songs={this.state.trackDetails} swiperSongsHandler={this.swiperSongsHandler} />
+
+        }
         let ProfileMenu = <Profile profileMenu={this.state.categories} optionSelectHandler={this.optionSelectHandler} />
         let SwiperPane = null, PlayerPane=null, RightPane = null;
         if(this.state.isEmpty || this.state.trackDetails === null){
@@ -97,18 +124,18 @@ class DashBoard extends Component {
 
         return (
             <div className="main">
-                <header>
-                    {NavBar}
-                </header>
+                <Toolbar 
+                    searchHandler={this.searchHandler} 
+                    drawerClickHandler={this.drawerToggleClickHandler}/>
+                {sideDrawer}
+                {backdrop}
                 <div className="mainSection">
                     <div className="leftPane"> 
                        {ProfileMenu}
                     </div>
                     <div className="centerPane"> 
                         {SwiperPane}
-                        <div className="playerDesktop">
-                            {PlayerPane}
-                        </div>
+                        {PlayerPane}
                     </div>
                     <div className="rightPane">
                         {RightPane}

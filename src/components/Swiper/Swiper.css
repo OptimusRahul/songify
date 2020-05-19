@@ -1,5 +1,6 @@
 .swiper {
     background-color: #fff;
+    border-radius: 100px;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
     color:#000;
@@ -11,6 +12,7 @@
     width: 100%;
     overflow: hidden;
     padding: 3em 0;
+    border-radius: 10px;
 }
 
 .swiper-slide {
@@ -20,3 +22,33 @@
     width: 300px;
     height: 200px;
 }
+
+@media (min-width: 320px) and (max-width: 479px){
+    .swiper-container{
+        width: 10rem;
+    }
+    
+    .swiper-slide{
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) { 
+    .swiper-container{
+        width: 21.3rem;
+    }
+    
+    .swiper-slide{
+        width: 150px;
+        height: 150px;
+    }
+} 
+  
+/* Media Query for low resolution  Tablets, Ipads */ 
+@media (min-width: 481px) and (max-width: 767px) { 
+    body { 
+        background-color: yellow; 
+    } 
+} 
+  

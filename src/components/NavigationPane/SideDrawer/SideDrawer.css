@@ -1,32 +1,57 @@
-.SideDrawer {
-    position: fixed;
-    width: 280px;
-    max-width: 70%;
+.side-drawer{
     height: 100%;
-    left: 0;
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    
+    position: fixed;
     top: 0;
+    width: 70%;
+    max-width: 400px;
     z-index: 200;
-    background-color: white;
-    padding: 32px 16px;
-    box-sizing: border-box;
     transition: transform 0.3s ease-out;
 }
 
-@media (min-width: 500px) {
-    .SideDrawer {
-        display: none;
-    }
+.sHeader {
+    color: white;
 }
 
-.Open {
-    transform: translateX(0);
-}
-
-.Close {
+.side-drawer.left {
+    left: 0;
     transform: translateX(-100%);
 }
 
-.Logo {
-    height: 11%;
-    margin-bottom: 32px;
+.side-drawer.right {
+    right: 0;
+    transform: translateX(100%);
+    overflow: scroll;
+}
+
+.side-drawer.open {
+    transform: translateX(0);
+}
+
+.side-drawer ul {
+    height: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.side-drawer li {
+    margin: 0.5rem;
+}
+
+.side-drawer a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+@media (min-width: 769px){
+    .side-drawer{
+        display: none;
+    }
 }

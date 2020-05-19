@@ -1,19 +1,24 @@
 .player {
+    background: white;
     display: flex;
     justify-content: center;
     margin-top: 2em;
     flex-flow: column;
     padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.progress-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .heart {
     font-size: 30px;
-    color: black;
-    margin: 2px 6px;
-}
-
-.heart:visited, .heart:focus, .heart:active, .heart:hover{
     color: red;
+    margin: 2px 6px;
 }
 
 .text {
@@ -77,3 +82,15 @@ span{
     margin: 10px;
     padding-left: 5px;
 }
+
+@media (min-width: 320px) and (max-width: 479px){
+    .player{
+        margin-top: 10rem;
+    }
+}
+
+@media (max-width: 480px) { 
+    .player{
+        margin-top: 10rem;
+    }
+} 
