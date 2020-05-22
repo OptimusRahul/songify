@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Layout from './Layout/Layout';
+import Dashboard from './containers/Dashboard/DashBoard';
 import 'swiper/css/swiper.min.css';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Layout />
+      <Dashboard />
     </div>
   );
 }

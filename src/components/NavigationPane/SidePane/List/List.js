@@ -10,11 +10,13 @@ const list = props => {
                 <h4>Songs List</h4>
             </div>
             <div className="List">
-                {props.songs.map((song, i) => (
-                    <form class="current" onClick={() => props.swiperSongsHandler(i)} key={i}>
-                        <Tab name={song.title} key={i} />
-                    </form> 
-                ))}
+                {Array.from(props.songs, ([key, song]) => {
+                    return (
+                        <form className="current" onClick={() => props.swiperSongsHandler(song.index, key)} key={key}>
+                            <Tab name={song.title} key={key} />
+                        </form> 
+                    );
+                })}
             </div>
         </div>
     )

@@ -18,7 +18,7 @@ class DashBoard extends Component {
         isEmpty: true,
         currentSong: null,
         currentTrackNo: 0,
-        trackDetails: [],
+        trackDetails: new Map(),
         mode: 'all',
         sideDrawerOpen: false,
         sideDrawerSide: 'left'
@@ -30,37 +30,45 @@ class DashBoard extends Component {
 
     fetchSongsHandler = async() => {
         let data = await playList();
-        let songs = [];
-        data.data.tracks.data.map(song=> {
+        let i=0 ;
+        let songsMap = new Map();
+        let currentTrackNo;
+        data.data.tracks.data.map((song, index) => {
+            if(index === 0) currentTrackNo = song.id
             let currentTrackObj = {
+                id: song.id,
                 title: song.title,
                 url: song.preview,
-                coverImg: song.album.cover_medium
+                coverImg: song.album.cover_medium,
+                favorite: false,
+                index: i++
             }
-            return songs.push(currentTrackObj);
-        })
-        this.setState({ isEmpty: false, trackDetails: songs, mode: 'all' });
+            return songsMap.set(song.id, currentTrackObj);
+        });
+        this.setState({ isEmpty: false, trackDetails: songsMap, mode: 'all', currentTrackNo });
     }
 
-    swiperSongsHandler = value => {
-        if(value < 0) value = 0
+    swiperSongsHandler = (value, id) => {
+        if(value <= 0 || value === undefined) value = 0;
         if(value > this.state.trackDetails.length) value = this.state.trackDetails.length - 1;
-        this.setState({ currentSong: value, currentTrackNo: value})
+        this.setState({ currentSong: value, currentTrackNo: id, sideDrawerOpen: false })
     }
 
     searchHandler = async(name) => {
         let data = await searchList(name);
         let songs = [];
-        data.data.data.map(song=> {
+        let currentTrackNo;
+        data.data.data.map((song,i)=> {
+            if(i === 0) currentTrackNo = song.id;
             let currentTrackObj = {
+                id: song.id,
                 title: song.title,
                 url: song.preview,
                 coverImg: song.album.cover_medium
             }
             return songs.push(currentTrackObj);
         })
-
-        this.setState({ isEmpty: false, trackDetails: songs, mode: 'search' });
+        this.setState({ isEmpty: false, trackDetails: songs, mode: 'search', currentTrackNo });
     }
 
     optionSelectHandler = (type) => {
@@ -80,10 +88,10 @@ class DashBoard extends Component {
                 this.setState({ trackDetails: JSON.parse(localStorage.getItem('Recent')), mode: 'recent' });
             }
         }
+        this.backdropClickHandler();
     }
 
     drawerToggleClickHandler = (value) => {
-        console.log(value);
         this.setState((prevState) => {
             return { sideDrawerOpen: !prevState.sideDrawerOpen, sideDrawerSide: value};
         })
@@ -110,14 +118,14 @@ class DashBoard extends Component {
         }
         let ProfileMenu = <Profile profileMenu={this.state.categories} optionSelectHandler={this.optionSelectHandler} />
         let SwiperPane = null, PlayerPane=null, RightPane = null;
-        if(this.state.isEmpty || this.state.trackDetails === null){
+        if(this.state.isEmpty){
             SwiperPane = <Spinner />
             PlayerPane = <Spinner />
             RightPane = <Spinner />
         } else  {
             SwiperPane = <Swiper id={this.state.currentSong} songs={this.state.trackDetails} 
                              swiperSongsHandler={this.swiperSongsHandler} mode={this.state.mode}/>
-            PlayerPane = <Player trackDetails={this.state.currentSong === null ? this.state.trackDetails[0] : this.state.trackDetails[this.state.currentSong]}
+            PlayerPane = <Player trackDetails={this.state.trackDetails.get(this.state.currentTrackNo)}
                              currentTrackNo={this.state.currentTrackNo} swiperSongsHandler={this.swiperSongsHandler} />
             RightPane = <List songs={this.state.trackDetails} swiperSongsHandler={this.swiperSongsHandler} />
         }

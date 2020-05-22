@@ -13,7 +13,7 @@ const SearchBar = props => {
     return(
         <div className="Search">
             <input type='text' className="SearchText" placeholder='Search Songs' onChange={e => onChangeHandler(e.target.value)}/>&nbsp;
-            <button type="button" className='primary SearchButton' onClick={() => props.searchHandler(searchInput)}><i class="fa fa-search" aria-hidden="true"></i></button>
+            <button type="button" className='primary SearchButton' onClick={() => props.searchHandler(searchInput)}><i className="fa fa-search" aria-hidden="true"></i></button>
         </div>
     )
 };

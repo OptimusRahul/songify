@@ -1,4 +1,5 @@
 .List{
+    margin: 0 auto;
     max-height: 29.5em;
     box-sizing: border-box;
     overflow-y: scroll;

@@ -15,6 +15,10 @@
     justify-content: space-around;
 }
 
+.noFav{
+    font-size: 30px;
+    margin: 2px 6px;
+}
 .heart {
     font-size: 30px;
     color: red;

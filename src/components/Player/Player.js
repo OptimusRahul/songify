@@ -24,43 +24,52 @@ class Player extends Component {
             percentage: 0,
             currentTime: 0,
             songDuration: 0,
-            favSong: null
+            favSong: null,
+            heartIcon: 'fa fa-heart-o noFav'
         }
-        this.setState({url: this.props.trackDetails.url, songDuration: this.audio.duration });
-        this.audio.src = this.props.trackDetails.url;
     }
 
     audio = new Audio(this.props.url);
     recentData = [];
     favoriteSongs = [];
-    heartIcon = 'fa fa-heart-o';
+
+    componentDidMount() {
+        this.setState({url: this.props.trackDetails.url, songDuration: this.audio.duration });
+        this.audio.src = this.props.trackDetails.url;
+    }
 
     favouriteSongsHandler = () => {
-        if(localStorage.getItem('Favorites') !== null && this.favoriteSongs.length === 0){
-            Array.from(JSON.parse(localStorage.getItem('Favorites')), favorites => this.favoriteSongs.push(favorites));
-        }
-        if(this.heartIcon === 'fa fa-heart-o'){
-            this.heartIcon = 'fa fa-heart';
-            if(!this.favoriteSongs.includes(this.props.trackDetails)){
-                this.favoriteSongs.push(this.props.trackDetails);
-                localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
-            }
-        } else {
-            this.heartIcon = 'fa fa-heart';
-            
+        if(this.state.heartIcon === 'fa fa-heart-o noFav'){
+            this.props.trackDetails.favorite = true;
+            this.favoriteSongs.push(this.props.trackDetails.id);
+            localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+            this.setState({ heartIcon: 'fa fa-heart heart' });
+        } else  {
+            let index = JSON.parse(localStorage.getItem('Favorites')).indexOf(this.props.trackDetails.id);
+            this.favoriteSongs.splice(index, 1);
+            localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+            this.setState({ heartIcon: 'fa fa-heart-o noFav' })
         }
     }
 
+    /*checkFavorite = () =>{
+        console.log(this.props.trackDetails.favorite)
+        if(this.props.trackDetails.favorite){
+            this.setState({ heartIcon: 'fa fa-heart heart' });
+        } else {
+            this.setState({ heartIcon: 'fa fa-heart-o noFav' });
+        }
+    }*/
+
     audioController = () => {
         this.currentTimeInterval = null;
-
         if(!this.state.isPlayed){
             if(this.state.url !== this.props.trackDetails.url){
                 this.setState({ url: this.props.trackDetails.url })
                 this.audio.src = this.props.trackDetails.url;
             }
 
-            this.setState({ playing: true, isPlayed: true});
+            this.setState({ playing: true, isPlayed: true });
 
             this.audio.play();
             if(localStorage.getItem('Recent') !== null && this.recentData.length === 0){
@@ -87,10 +96,11 @@ class Player extends Component {
             this.audio.pause();
         }
     }
-//<i class="fa fa-heart" aria-hidden="true"></i>
+
     render() {
-        if(this.state.url !== this.props.trackDetails.url && this.state.url !== null && this.state.isPlayed){
-            this.audioController();
+        
+        if((this.state.url !== undefined  && this.state.url !== null) && (this.state.url !== this.props.trackDetails.url || this.state.isPlayed)){
+            this.audioController()
         }
         
         return (
@@ -98,7 +108,7 @@ class Player extends Component {
                 <div className="player" aria-controls='Audio Player' role='region'>
                     <div className="text">
                         <h3>{this.props.trackDetails.title}</h3>
-                        <i className="fa fa-heart-o heart" 
+                        <i className={this.state.heartIcon}
                             aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
                     </div>
                     <div className="progress-time">
@@ -111,7 +121,9 @@ class Player extends Component {
                     </div>
                     <div className="btn-container">
                         <div className="icon-container">
-                            <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
+                            <i  className="fa fa-chevron-left position-left" 
+                                style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" 
+                                onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
                         </div>
                         <div className="icon-container__center">
                             <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"} style={{ }}

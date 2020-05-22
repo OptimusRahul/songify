@@ -23,7 +23,7 @@
     height: 200px;
 }
 
-@media (min-width: 320px) and (max-width: 479px){
+@media (min-width: 320px) and (max-width: 479px){   
     .swiper-container{
         width: 10rem;
     }

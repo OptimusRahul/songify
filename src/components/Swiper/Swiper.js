@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 
-import Swiper from 'swiper';
-import  'swiper/css/swiper.min.css';
+import 'swiper/css/swiper.min.css';
 import './Swiper.css';
+import Swiper from 'swiper';
 
 class Songs extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             play: false,
-            mode: null
+            mode: 'all'
         }
     }
 
-    swiperInitializeHandler = () => {
+    componentDidMount() {
         this.Swiper = new Swiper('.swiper-container', {
             effect: 'coverflow',
             centeredSlides: true,
@@ -32,49 +32,43 @@ class Songs extends Component {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
-            scrollbar:{
+            scrollbar: {
                 el: '.swiper-scrollbar',
                 draggable: true
             },
         });
     }
 
-    componentDidMount(){
-        this.swiperInitializeHandler();
-        this.setState({ mode: this.props.mode });
-    }
-
     modeHandler = () => {
-        this.swiperInitializeHandler();
-        this.setState({ mode: this.props.mode });
+        this.setState({ mode: this.props.mode }, () => {
+            this.Swiper.update()
+        });
     }
 
     onClickHandler = () => {
-        this.Swiper.updateProgress();
         this.Swiper.slideTo(this.Swiper.clickedIndex);
     }
 
     onClickHandlers = (id) => {
-        this.Swiper.updateProgress();
         this.Swiper.slideTo(id);
     }
 
-    render(){
-        if(this.state.mode !== this.props.mode){
+    render() {
+        if (this.state.mode !== this.props.mode) {
             this.modeHandler();
         }
-        
-        if(this.props.id !== null){
+
+        if (this.props.id !== null) {
             this.onClickHandlers(this.props.id)
         }
-        
+
         return (
             <div className="swiper">
                 <div className="swiper-container" onScroll={this.onClickHandler}>
-                    <div className="swiper-wrapper" onClick={(e) => this.props.swiperSongsHandler(this.Swiper.activeIndex)}>  
-                        {this.props.songs.map((song, i) => (    
-                            <div onClick={this.onClickHandler} className="swiper-slide" style={{backgroundImage: `url(${song.coverImg})`}} key={i} value={song.coverImg}>
-                                <h1 style={{display: 'none'}}>{song.title}</h1>
+                    <div className="swiper-wrapper" onClick={() => this.props.swiperSongsHandler(this.Swiper.activeIndex)}>
+                        {Array.from(this.props.songs, ([key, song]) => (
+                            <div onClick={this.onClickHandler} className="swiper-slide" style={{ backgroundImage: `url(${song.coverImg})` }} key={key} value={song.coverImg}>
+                                <h1 style={{ display: 'none' }}>{song.title}</h1>
                             </div>
                         ))}
                     </div>
