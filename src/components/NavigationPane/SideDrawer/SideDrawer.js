@@ -11,7 +11,7 @@ const sideDrawer = props => {
     }
 
     let sideDrawerContent;
-    if(props.side === 'left'){ 
+    if(props.side === 'left'){
         sideDrawerContent = <div>
                                 <Logo />
                                 {props.profileMenu.map((item, i) => (
@@ -29,11 +29,13 @@ const sideDrawer = props => {
                                     <h4>Songs List</h4>
                                 </div>
                                 <div className="scroll">
-                                    {props.songs.map((song, i) => (
-                                        <form className="List" onClick={() => props.swiperSongsHandler(i)} key={i}>
-                                            <Tab name={song.title} key={i} />
-                                        </form> 
-                                    ))}
+                                    {Array.from(props.songs, ([key, song]) => {
+                                        return(
+                                            <form className="List" onClick={() => props.swiperSongsHandler(song.index, key)} key={key}>
+                                                <Tab name={song.title} key={key} />
+                                            </form> 
+                                        );
+                                    })}
                                 </div>
                             </div>
     }

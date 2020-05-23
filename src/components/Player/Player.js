@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 
-import { formatTime } from '../../utility/utility';
+import { formatTime, fetchLocalStorageData } from '../../utility/utility';
 
 import './Player.css';
 
@@ -15,92 +15,81 @@ const Track = styled.div`
 
 class Player extends Component {
 
+    audio = new Audio(this.props.trackDetails.url);
+
     constructor(props){
         super(props);
         this.state = {
             playing: false,
             isPlayed: false,
-            url: null,
             percentage: 0,
-            currentTime: 0,
-            songDuration: 0,
             favSong: null,
-            heartIcon: 'fa fa-heart-o noFav'
         }
-    }
-
-    audio = new Audio(this.props.url);
-    recentData = [];
-    favoriteSongs = [];
-
-    componentDidMount() {
-        this.setState({url: this.props.trackDetails.url, songDuration: this.audio.duration });
+        this.url = this.props.trackDetails.url
         this.audio.src = this.props.trackDetails.url;
+
+        this.recentData = [];
+        this.favoriteSongs = [];
+        Array.from((fetchLocalStorageData('Favorites', null)), key => this.favoriteSongs.push(key.values()  ));
+        Array.from((fetchLocalStorageData('Recent', null)), key => this.recentData.push(key));
     }
 
     favouriteSongsHandler = () => {
-        if(this.state.heartIcon === 'fa fa-heart-o noFav'){
+        if(!this.props.trackDetails.favorite){
             this.props.trackDetails.favorite = true;
             this.favoriteSongs.push(this.props.trackDetails.id);
             localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
-            this.setState({ heartIcon: 'fa fa-heart heart' });
+            this.setState({ favSong: true });
         } else  {
             let index = JSON.parse(localStorage.getItem('Favorites')).indexOf(this.props.trackDetails.id);
             this.favoriteSongs.splice(index, 1);
+            this.props.trackDetails.favorite = false;
             localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
-            this.setState({ heartIcon: 'fa fa-heart-o noFav' })
+            this.setState({ favSong: false });
+        }
+
+        if(this.props.mode === 'favorites'){
+            this.props.updateSongsHandler();
         }
     }
 
-    /*checkFavorite = () =>{
-        console.log(this.props.trackDetails.favorite)
-        if(this.props.trackDetails.favorite){
-            this.setState({ heartIcon: 'fa fa-heart heart' });
-        } else {
-            this.setState({ heartIcon: 'fa fa-heart-o noFav' });
-        }
-    }*/
-
     audioController = () => {
         this.currentTimeInterval = null;
-        if(!this.state.isPlayed){
-            if(this.state.url !== this.props.trackDetails.url){
-                this.setState({ url: this.props.trackDetails.url })
+
+        if(!this.state.playing){
+            if(this.url !== this.props.trackDetails.url){
+                this.url= this.props.trackDetails.url;
                 this.audio.src = this.props.trackDetails.url;
             }
 
-            this.setState({ playing: true, isPlayed: true });
-
             this.audio.play();
-            if(localStorage.getItem('Recent') !== null && this.recentData.length === 0){
-                Array.from(JSON.parse(localStorage.getItem('Recent')), recent => this.recentData.push(recent));
-            }
-            if(!this.recentData.includes(this.props.trackDetails)){
-                this.recentData.push(this.props.trackDetails);
+            
+            if(!this.recentData.includes(this.props.trackDetails.id)){
+                this.recentData.push(this.props.trackDetails.id);
                 localStorage.setItem('Recent', JSON.stringify(this.recentData));
-            }    
+            }
 
             this.audio.addEventListener('timeupdate', () => {
                 if(this.audio != null){
                     this.setState({ 
                         percentage: Math.floor((this.audio.currentTime / this.audio.duration) * 100),
-                        currentTime: this.audio.currentTime,
-                        songDuration: this.audio.duration
                     });
                 }
-            }, true)
+            }, true);
+            
+            this.setState({ isPlayed: true, playing: true})
 
         } else {
-            this.setState({ playing:false, isPlayed: false });
+            this.setState({ playing: false });
             clearInterval(this.currentTimeInterval);
             this.audio.pause();
         }
     }
 
     render() {
-        
-        if((this.state.url !== undefined  && this.state.url !== null) && (this.state.url !== this.props.trackDetails.url || this.state.isPlayed)){
-            this.audioController()
+        console.log(this.url, ' ', this.props.trackDetails.url) 
+        if(this.url !== undefined && this.url !== this.props.trackDetails.url && this.state.isPlayed){
+            this.audioController();
         }
         
         return (
@@ -108,7 +97,7 @@ class Player extends Component {
                 <div className="player" aria-controls='Audio Player' role='region'>
                     <div className="text">
                         <h3>{this.props.trackDetails.title}</h3>
-                        <i className={this.state.heartIcon}
+                        <i className={this.props.trackDetails.favorite ? 'fa fa-heart heart' : 'fa fa-heart-o noFav'}
                             aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
                     </div>
                     <div className="progress-time">
@@ -143,20 +132,20 @@ export default Player;
 
 /*
 <div className="mPlayer">
-                    <div className="text">
-                        <h3>{this.props.trackDetails.title}</h3>
-                        <i className="fa fa-heart-o heart" 
-                            aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
-                    </div>
-                    <div className="icon-container">
-                        <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
-                    </div>
-                    <div className="icon-container__center">
-                        <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"}
-                            aria-controls="audio1" onClick={this.audioController}></i>
-                    </div>
-                    <div className="icon-container">
-                            <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px', color: 'white'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
-                        </div>
-                </div>  
+    <div className="text">
+        <h3>{this.props.trackDetails.title}</h3>
+        <i className="fa fa-heart-o heart" 
+            aria-hidden="true" onClick = {this.favouriteSongsHandler} ></i>
+    </div>
+    <div className="icon-container">
+        <i className="fa fa-chevron-left position-left" style={{ fontSize: '30px', color: 'white'}} aria-hidden="true" onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo - 1)}></i>
+    </div>
+    <div className="icon-container__center">
+        <i className={this.state.playing ? "fa fa-pause position-center" : "fa fa-play position-center"}
+            aria-controls="audio1" onClick={this.audioController}></i>
+    </div>
+    <div className="icon-container">
+            <i role="button" className="fa fa-chevron-right position-right" style={{ fontSize: '30px', color: 'white'}}onClick={() => this.props.swiperSongsHandler(this.props.currentTrackNo + 1)}></i>
+        </div>
+</div>  
 */

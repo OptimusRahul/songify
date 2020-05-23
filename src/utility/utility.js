@@ -19,3 +19,22 @@ const format_To_Number = time => {
     if(str.length === 0) return '00';
     return str;
 }
+
+export const fetchLocalStorageData = (mode, tracks) => {
+    let songs = new Map();
+    let data = JSON.parse(localStorage.getItem(mode));
+    if(data === null || data.length === 0){
+        return songs;
+    }
+
+    if(tracks === null || tracks === undefined){
+        data.map(key => {    
+            return songs.set(key, key);
+        });
+    } else {
+        data.map(key => {
+            return songs.set(key, tracks.get(key));
+        });
+    }
+    return songs;
+}

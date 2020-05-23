@@ -46,6 +46,7 @@ class Songs extends Component {
     }
 
     onClickHandler = () => {
+        console.log(this.Swiper.clickedSlide.getElementsByTagName('span')[0].innerText);
         this.Swiper.slideTo(this.Swiper.clickedIndex);
     }
 
@@ -65,10 +66,12 @@ class Songs extends Component {
         return (
             <div className="swiper">
                 <div className="swiper-container" onScroll={this.onClickHandler}>
-                    <div className="swiper-wrapper" onClick={() => this.props.swiperSongsHandler(this.Swiper.activeIndex)}>
+                    <div className="swiper-wrapper" onClick={
+                            () => this.props.swiperSongsHandler(this.Swiper.activeIndex, this.Swiper.clickedSlide.getElementsByTagName('span')[0].innerText)
+                    }>
                         {Array.from(this.props.songs, ([key, song]) => (
                             <div onClick={this.onClickHandler} className="swiper-slide" style={{ backgroundImage: `url(${song.coverImg})` }} key={key} value={song.coverImg}>
-                                <h1 style={{ display: 'none' }}>{song.title}</h1>
+                                <h1 style={{ display: 'none' }}>{song.title}<span>{key}</span></h1> 
                             </div>
                         ))}
                     </div>
