@@ -23,7 +23,8 @@ class DashBoard extends Component {
         trackDetails: new Map(),
         mode: 'all',
         sideDrawerOpen: false,
-        sideDrawerSide: 'left'
+        sideDrawerSide: 'left',
+        size: 0
     } 
      
     async componentDidMount(){
@@ -33,7 +34,6 @@ class DashBoard extends Component {
     fetchSongsHandler = async() => {
         let data = await playList();
         if(data !== null){
-            console.log(data);
             this.setSongsHandler(data.data.tracks.data, 'all');
         }
     }
@@ -42,6 +42,7 @@ class DashBoard extends Component {
         let songsMap = new Map();
         let currentTrackNo;
         let i = 0;
+        let size = data.length;
         data.map((song, index) => {
             if(index === 0) currentTrackNo = song.id;
 
@@ -65,7 +66,7 @@ class DashBoard extends Component {
 
         let favSong = fetchLocalStorageData_ID('FavID');
         if(favSong !== null){
-            favSong.map(key => {
+            favSong.forEach(key => {
                 let currentItem = songsMap.get(key);
                 if(currentItem !== undefined){
                     currentItem.favorite = true;
@@ -73,7 +74,7 @@ class DashBoard extends Component {
             });
         }
 
-        this.setState({ isEmpty: false, trackDetails: songsMap, mode , currentTrackNo });
+        this.setState({ isEmpty: false, trackDetails: songsMap, mode , currentTrackNo, size });
     };
 
     updateSongsHandler = () => {
@@ -93,7 +94,7 @@ class DashBoard extends Component {
 
     fetchModeSongs = (data) => {
         let songObj = {}
-        data.map((key, i) => {
+        data.forEach((key, i) => {
             let currentObj = {
                 id: key,
                 ...fetchLocalStorageData_tracks(key)
@@ -167,7 +168,7 @@ class DashBoard extends Component {
             RightPane = <Spinner />
         } else  {
             SwiperPane = <Swiper id={this.state.currentSong} songs={this.state.trackDetails} 
-                             swiperSongsHandler={this.swiperSongsHandler} mode={this.state.mode} />
+                             swiperSongsHandler={this.swiperSongsHandler} mode={this.state.mode} size={this.state.size} />
             PlayerPane = <Player trackDetails={this.state.trackDetails.get(this.state.currentTrackNo)}
                              currentTrackNo={this.state.currentTrackNo} swiperSongsHandler={this.swiperSongsHandler} 
                              optionSelectHandler={this.optionSelectHandler} mode={this.state.mode} updateSongsHandler={this.updateSongsHandler}/>

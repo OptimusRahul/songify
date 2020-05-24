@@ -26,7 +26,6 @@ export const setLocalStorageData = (mode, data) => {
 
 export const fetchLocalStorageData_tracks = (mode) => {
     let data = localStorage.getItem(mode);
-    console.log(data);
     if(data !== null) return JSON.parse(data);
     return null;
 }

@@ -10,7 +10,8 @@ class Songs extends Component {
         super(props);
         this.state = {
             play: false,
-            mode: 'all'
+            mode: 'all',
+            size: 60
         }
     }
 
@@ -39,6 +40,12 @@ class Songs extends Component {
         });
     }
 
+    swiperSizeHandler = () => {
+        this.setState({ size: this.props.size }, () => {
+            this.Swiper.update()
+        })
+    }
+
     modeHandler = () => {
         this.setState({ mode: this.props.mode }, () => {
             this.Swiper.update()
@@ -55,8 +62,12 @@ class Songs extends Component {
     }
 
     render() {
+
         if (this.state.mode !== this.props.mode) {
             this.modeHandler();
+        }
+        else if(this.state.size !== this.props.size){
+            this.swiperSizeHandler();
         }
 
         if (this.props.id !== null) {
@@ -69,11 +80,11 @@ class Songs extends Component {
                     <div className="swiper-wrapper" onClick={
                             () => this.props.swiperSongsHandler(this.Swiper.activeIndex, this.Swiper.clickedSlide.getElementsByTagName('span')[0].innerText)
                     }>
-                        {Array.from(this.props.songs, ([key, song]) => (
-                            <div onClick={this.onClickHandler} className="swiper-slide" style={{ backgroundImage: `url(${song.coverImg})` }} key={key} value={song.coverImg}>
+                        {Array.from(this.props.songs, ([key, song]) => {
+                            return (<div onClick={this.onClickHandler} className="swiper-slide" style={{ backgroundImage: `url(${song.coverImg})` }} key={key} value={song.coverImg}>
                                 <h1 style={{ display: 'none' }}>{song.title}<span>{key}</span></h1> 
-                            </div>
-                        ))}
+                            </div>)
+                        })}
                     </div>
                     <div className="swiper-button-prev"></div>
                     <div className="swiper-button-next"></div>
