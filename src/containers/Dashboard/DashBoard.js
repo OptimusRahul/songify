@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { playList, searchList } from '../../api/index';
-import { fetchLocalStorageData } from '../../utility/utility';
+import { fetchLocalStorageData_tracks, fetchLocalStorageData_ID } from '../../utility/utility';
 
 import Backdrop from '../../components/UI/Backdrop/Backdrop';
 import Spinner from '../../components/UI/Loader/Loader';
@@ -32,36 +32,52 @@ class DashBoard extends Component {
 
     fetchSongsHandler = async() => {
         let data = await playList();
-        let i=0 ;
+        if(data !== null){
+            console.log(data);
+            this.setSongsHandler(data.data.tracks.data, 'all');
+        }
+    }
+
+    setSongsHandler = (data, mode) => {
         let songsMap = new Map();
         let currentTrackNo;
-        data.data.tracks.data.map((song, index) => {
-            if(index === 0) currentTrackNo = song.id
+        let i = 0;
+        data.map((song, index) => {
+            if(index === 0) currentTrackNo = song.id;
+
+            let coverImg;
+            if(mode === 'favorites' || mode === 'recent'){
+                coverImg = song.coverImg;
+            } else {
+                coverImg = song.album.cover_medium;
+            }
+
             let currentTrackObj = {
                 id: song.id,
                 title: song.title,
                 url: song.preview,
-                coverImg: song.album.cover_medium,
+                coverImg,
                 favorite: false,
                 index: i++
             }
             return songsMap.set(song.id, currentTrackObj);
         });
 
-        let favSong = await fetchLocalStorageData('Favorites', null).values();
-        Array.from((favSong), item => {
-            if(songsMap.get(item) !== undefined){
-                songsMap.get(item).favorite = true;
-            }
+        let favSong = fetchLocalStorageData_ID('FavID');
+        if(favSong !== null){
+            favSong.map(key => {
+                let currentItem = songsMap.get(key);
+                if(currentItem !== undefined){
+                    currentItem.favorite = true;
+                }
+            });
+        }
 
-            return songsMap;
-        });
-        this.setState({ isEmpty: false, trackDetails: songsMap, mode: 'all', currentTrackNo });
-    }
+        this.setState({ isEmpty: false, trackDetails: songsMap, mode , currentTrackNo });
+    };
 
     updateSongsHandler = () => {
-        let favoriteMap = fetchLocalStorageData('Favorites', this.state.trackDetails);
-        favoriteMap.size !== 0 ? this.setState({ trackDetails: favoriteMap }) : this.optionSelectHandler('All Songs');
+        this.optionSelectHandler('Yours Favorite')
     }
 
     swiperSongsHandler = (value, id) => {
@@ -72,40 +88,44 @@ class DashBoard extends Component {
 
     searchHandler = async(name) => {
         let data = await searchList(name);
-        let songs = new Map();
-        let currentTrackNo;
-        data.data.data.map((song,i)=> {
-            if(i === 0) currentTrackNo = song.id;
-            let currentTrackObj = {
-                id: song.id,
-                title: song.title,
-                url: song.preview,
-                coverImg: song.album.cover_medium,
-                favorite: false,
-                index: i++
+        this.setSongsHandler(data.data.data, 'search');
+    }
+
+    fetchModeSongs = (data) => {
+        let songObj = {}
+        data.map((key, i) => {
+            let currentObj = {
+                id: key,
+                ...fetchLocalStorageData_tracks(key)
             }
-            return songs.set(song.id, currentTrackObj);
-        })
-        this.setState({ isEmpty: false, trackDetails: songs, mode: 'search', currentTrackNo });
+            songObj[i] = currentObj;
+        });
+        
+        return Object.values(songObj)
     }
 
     optionSelectHandler = (type) => {
         if(type === 'All Songs') {
             this.fetchSongsHandler();
         } else if(type === 'Yours Favorite'){
-            if(!localStorage.getItem('Favorites') || JSON.parse(localStorage.getItem('Favorites')).length === 0){
-                alert('No');
+            let favSongsID = fetchLocalStorageData_ID('FavID');
+            console.log(favSongsID.length);
+            if(favSongsID === null || favSongsID.length === 0){
+                alert('You have not selected any song as favorite')
+                this.fetchSongsHandler();
             } else {
-                let favoriteMap = fetchLocalStorageData('Favorites', this.state.trackDetails);
-                this.setState({ trackDetails: favoriteMap, mode: 'favorites' });
+                let favSongs = this.fetchModeSongs(favSongsID);
+                this.setSongsHandler(favSongs, 'favorites');
             }
 
         } else if(type === 'Recently Played'){
-            if(!localStorage.getItem('Recent')){
-                alert('No');
+            let recentSongsID = fetchLocalStorageData_ID('RecentID');
+            if(recentSongsID === null || recentSongsID.length === 0){
+                alert('Not played any song yet');
+                this.fetchSongsHandler();
             } else {
-                let recentMap = fetchLocalStorageData('Recent', this.state.trackDetails);
-                this.setState({ trackDetails: recentMap, mode: 'recent' });
+                let recentSongs = this.fetchModeSongs(recentSongsID);
+                this.setSongsHandler(recentSongs, 'recent');
             }
         }
         this.backdropClickHandler();

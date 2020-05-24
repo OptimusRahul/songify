@@ -20,21 +20,37 @@ const format_To_Number = time => {
     return str;
 }
 
-export const fetchLocalStorageData = (mode, tracks) => {
-    let songs = new Map();
-    let data = JSON.parse(localStorage.getItem(mode));
-    if(data === null || data.length === 0){
-        return songs;
-    }
+export const setLocalStorageData = (mode, data) => {
+    localStorage.setItem(mode, data);
+}
 
-    if(tracks === null || tracks === undefined){
-        data.map(key => {    
-            return songs.set(key, key);
-        });
-    } else {
-        data.map(key => {
-            return songs.set(key, tracks.get(key));
-        });
+export const fetchLocalStorageData_tracks = (mode) => {
+    let data = localStorage.getItem(mode);
+    console.log(data);
+    if(data !== null) return JSON.parse(data);
+    return null;
+}
+
+export const fetchLocalStorageData_ID = (mode) => {
+    let data = localStorage.getItem(mode);
+    if(data !==  null) return Array.from(JSON.parse(localStorage.getItem(mode)));
+    return null;
+}
+
+export const deleteLocalStorageData = (key) => {
+    // Fetch Current Data from LocalStorage
+    let fav = fetchLocalStorageData_ID('FavID');
+    let rec = fetchLocalStorageData_ID('RecentID');
+
+    // Check if key exists in local storage
+    let favIndex = fav !== null ? fav.indexOf(key) : -1;
+    let recentIndex = rec !== null ? rec.indexOf(key) : -1;
+
+    // Do operation
+    if(favIndex !== -1 && recentIndex !== -1){
+        fav.splice(favIndex, 1);
+    } else if(favIndex !== -1 && recentIndex === -1){
+        fav.splice(favIndex, 1);
+        localStorage.removeItem(key);
     }
-    return songs;
 }

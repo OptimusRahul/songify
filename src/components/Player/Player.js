@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 
-import { formatTime, fetchLocalStorageData } from '../../utility/utility';
+import { formatTime, setLocalStorageData ,fetchLocalStorageData_ID, deleteLocalStorageData } from '../../utility/utility';
 
 import './Player.css';
 
@@ -28,23 +28,37 @@ class Player extends Component {
         this.url = this.props.trackDetails.url
         this.audio.src = this.props.trackDetails.url;
 
-        this.recentData = [];
-        this.favoriteSongs = [];
-        Array.from((fetchLocalStorageData('Favorites', null)), key => this.favoriteSongs.push(key.values()  ));
-        Array.from((fetchLocalStorageData('Recent', null)), key => this.recentData.push(key));
+        this.recentSongsID = [];
+        this.favoriteSongsID = [];
+        let favSongID = fetchLocalStorageData_ID('FavID');
+        let recSongsID = fetchLocalStorageData_ID('RecentID');
+        if(favSongID !== null)
+           favSongID.map(item => this.favoriteSongsID.push(item));
+        if(recSongsID !== null)
+            recSongsID.map(item => this.recentSongsID.push(item));
     }
 
     favouriteSongsHandler = () => {
+        let obj = { 
+            title: this.props.trackDetails.title, 
+            url: this.props.trackDetails.url,
+            coverImg: this.props.trackDetails.coverImg
+        };
+
         if(!this.props.trackDetails.favorite){
             this.props.trackDetails.favorite = true;
-            this.favoriteSongs.push(this.props.trackDetails.id);
-            localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+            this.favoriteSongsID.push(this.props.trackDetails.id);
+            setLocalStorageData('FavID', JSON.stringify(this.favoriteSongsID));
+            setLocalStorageData(this.props.trackDetails.id, JSON.stringify(obj));
             this.setState({ favSong: true });
         } else  {
-            let index = JSON.parse(localStorage.getItem('Favorites')).indexOf(this.props.trackDetails.id);
-            this.favoriteSongs.splice(index, 1);
             this.props.trackDetails.favorite = false;
-            localStorage.setItem('Favorites', JSON.stringify(this.favoriteSongs));
+            deleteLocalStorageData(this.props.trackDetails.id);
+            let index = this.favoriteSongsID.indexOf(this.props.trackDetails.id);
+            if(index > -1){
+                this.favoriteSongsID.splice(index, 1);
+                setLocalStorageData('FavID', JSON.stringify(this.favoriteSongsID));
+            }            
             this.setState({ favSong: false });
         }
 
@@ -64,9 +78,10 @@ class Player extends Component {
 
             this.audio.play();
             
-            if(!this.recentData.includes(this.props.trackDetails.id)){
-                this.recentData.push(this.props.trackDetails.id);
-                localStorage.setItem('Recent', JSON.stringify(this.recentData));
+            if(!this.recentSongsID.includes(this.props.trackDetails.id)){
+                this.recentSongsID.push(this.props.trackDetails.id);
+                setLocalStorageData('RecentID', JSON.stringify(this.recentSongsID));
+                fetchLocalStorageData_ID('RecentID')
             }
 
             this.audio.addEventListener('timeupdate', () => {
@@ -87,7 +102,7 @@ class Player extends Component {
     }
 
     render() {
-        console.log(this.url, ' ', this.props.trackDetails.url) 
+        //console.log(this.url, ' ', this.props.trackDetails.url) 
         if(this.url !== undefined && this.url !== this.props.trackDetails.url && this.state.isPlayed){
             this.audioController();
         }
