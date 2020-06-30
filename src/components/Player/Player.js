@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import styled from 'styled-components'
 
 import { formatTime, setLocalStorageData ,fetchLocalStorageData_ID, deleteLocalStorageData } from '../../utility/utility';
 
 import './Player.css';
 
-const Track = styled.div`
-    width: ${props => props.percentage}%;
-    height: 100%;
-    background-color: #6bccf9;
-    border-radius: 8px;fe
-    transition: width  ease-in-out;
-`;
 
 class Player extends Component {
 
