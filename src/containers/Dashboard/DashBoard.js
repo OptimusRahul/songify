@@ -88,8 +88,12 @@ class DashBoard extends Component {
     }
 
     searchHandler = async(name) => {
-        let data = await searchList(name);
-        this.setSongsHandler(data.data.data, 'search');
+        if(name === null){
+            alert('Invalid song');
+        } else {
+            let data = await searchList(name);
+            this.setSongsHandler(data.data.data, 'search');
+        }
     }
 
     fetchModeSongs = (data) => {
@@ -177,6 +181,7 @@ class DashBoard extends Component {
 
         return (
             <div className="main">
+                <h1 className="text-header">Welcome To Songify</h1>
                 <Toolbar 
                     searchHandler={this.searchHandler} 
                     drawerClickHandler={this.drawerToggleClickHandler}/>

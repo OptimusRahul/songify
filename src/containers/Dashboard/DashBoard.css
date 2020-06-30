@@ -1,5 +1,16 @@
+body {
+    background: linear-gradient(#00c9ff, #92fe9d);
+    background: -webkit-linear-gradient(to right, #00c9ff, #92fe9d);
+    background: linear-gradient(to right,#00c9ff, #92fe9d);
+       
+}
+
 .main{
     margin-top: 64px;
+}
+
+.text-header {
+    display: none;
 }
 
 .mainSection{
@@ -12,15 +23,17 @@
     min-width: 165px;
     max-height: 32em;
     margin: 1em 0;
+    background: #fff;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .centerPane{
-    max-width: 60em;
+    min-width: 20%;
     max-height: 19em;
     padding: 10px;
-    margin: 1em 1em;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 1em;
+    /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
+    background: transparent;
     flex:2;
     flex-flow: column;
     justify-content: space-between;
@@ -28,13 +41,53 @@
 
 .rightPane{
     display: flex;
-    width: 100%;
     margin: 1em 0;
     max-height: 32em;
+    background: #fff;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
+@media (min-width: 320px) and (max-width: 479px){   
+    
+}
+
+@media only screen and (max-width: 480px) { 
+    .centerPane {
+        min-width: 20%;
+        margin-bottom: 15rem;
+    }
+}
+
 @media only screen and (max-width: 1024px){
+
+    .main{
+        /* margin-top: 0; */
+        flex: 1;
+        justify-content: space-evenly;
+        height: 399px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mainSection {
+        flex: 1;
+        justify-content: space-evenly;
+        height: 399px;
+        overflow: hidden;
+    }
+
+    .centerPane {
+        min-width: 20%;
+    }
+    
+    .text-header {
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
+        color: white;
+        font-weight: 300;
+    }
 
     .leftPane{
         display: none;
@@ -45,13 +98,9 @@
     }
 
     body {
-        background: #8E0E00;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(#00c9ff, #92fe9d);
+        background: -webkit-linear-gradient(to right, #00c9ff, #92fe9d);
+        background: linear-gradient(to right,#00c9ff, #92fe9d);
            
-    }
-
-    .centerPane {
-        background: white;
     }
 }

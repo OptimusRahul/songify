@@ -81,9 +81,16 @@ class Songs extends Component {
                             () => this.props.swiperSongsHandler(this.Swiper.activeIndex, this.Swiper.clickedSlide.getElementsByTagName('span')[0].innerText)
                     }>
                         {Array.from(this.props.songs, ([key, song]) => {
-                            return (<div onClick={this.onClickHandler} className="swiper-slide" style={{ backgroundImage: `url(${song.coverImg})` }} key={key} value={song.coverImg}>
-                                <h1 style={{ display: 'none' }}>{song.title}<span>{key}</span></h1> 
-                            </div>)
+                            return (
+                                <div onClick={this.onClickHandler} className="swiper-slide"  key={key} value={song.coverImg}>
+                                    <div>{song.title}</div>
+                                    <div class="imgCardHolder">
+                                        <img src={`${song.coverImg}`} alt="images"/>
+                                    </div>
+
+                                    <h1 style={{ display: 'none' }}>{song.title}<span>{key}</span></h1> 
+                                </div>
+                            )
                         })}
                     </div>
                     <div className="swiper-button-prev"></div>
@@ -99,4 +106,5 @@ class Songs extends Component {
 export default Songs;
 /*
 <audio className="audio" controls src={song.preview}>Click Here</audio>
+style={{ backgroundImage: `url(${song.coverImg})` }}
 */

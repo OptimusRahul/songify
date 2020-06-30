@@ -1,14 +1,16 @@
 .side-drawer{
     height: 100%;
-    background: #8E0E00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(#00c9ff, #92fe9d);
+    background: -webkit-linear-gradient(to right, #00c9 ff, #92fe9d);
+    background: linear-gradient(to right,#00c9ff, #92fe9d);
+    /*background: #8E0E00;  /* fallback for old browsers */
+    /*background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to bottom, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-    
     position: fixed;
     top: 0;
-    width: 70%;
-    max-width: 400px;
+    width: 100%;
+    /*max-width: 400px;*/
     z-index: 200;
     transition: transform 0.3s ease-out;
 }
@@ -19,17 +21,21 @@
 
 .side-drawer.left {
     left: 0;
-    transform: translateX(-100%);
+    transform: translateY(100%);
 }
 
 .side-drawer.right {
     right: 0;
-    transform: translateX(100%);
+    transform: translateY(100%);
     overflow: scroll;
 }
 
-.side-drawer.open {
-    transform: translateX(0);
+.side-drawer.left.open {
+    transform: translateY(70%);
+}
+
+.side-drawer.right.open{
+    transform: translateY(20%);
 }
 
 .side-drawer ul {

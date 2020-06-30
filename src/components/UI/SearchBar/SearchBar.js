@@ -10,21 +10,20 @@ const SearchBar = props => {
         setSearchInput(val);
     }
 
+    const searchButtonHandler = () => {
+        if(searchInput === ''){
+            props.searchHandler(null);  
+        } else {
+            props.searchHandler(searchInput);
+        }
+    }
+
     return(
         <div className="Search">
             <input type='text' className="SearchText" placeholder='Search Songs' onChange={e => onChangeHandler(e.target.value)}/>&nbsp;
-            <button type="button" className='primary SearchButton' onClick={() => props.searchHandler(searchInput)}><i className="fa fa-search" aria-hidden="true"></i></button>
+            <button type="button" className='primary SearchButton' onClick={searchButtonHandler}><i className="fa fa-search" aria-hidden="true"></i></button>
         </div>
     )
 };
 
 export default SearchBar;
-
-/*
-<Form>
-        <Form.Group controlId="formBasicEmail">
-            <Form.Control type="text" placeholder="Search Songs"/>&nbsp;
-            <Button variant="primary" type="submit"> Submit </Button>
-        </Form.Group> 
-    </Form>
-*/

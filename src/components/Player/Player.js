@@ -9,7 +9,7 @@ const Track = styled.div`
     width: ${props => props.percentage}%;
     height: 100%;
     background-color: #6bccf9;
-    border-radius: 8px;
+    border-radius: 8px;fe
     transition: width  ease-in-out;
 `;
 
@@ -24,7 +24,9 @@ class Player extends Component {
             isPlayed: false,
             percentage: 0,
             favSong: null,
+            duration: null
         }
+        
         this.url = this.props.trackDetails.url
         this.audio.src = this.props.trackDetails.url;
 
@@ -37,7 +39,11 @@ class Player extends Component {
         if(recSongsID !== null)
             recSongsID.map(item => this.recentSongsID.push(item));
     }
-
+    
+    componentDidMount() {
+		this.slider.value = 0;
+    }
+    
     favouriteSongsHandler = () => {
         let obj = { 
             title: this.props.trackDetails.title, 
@@ -74,6 +80,7 @@ class Player extends Component {
             if(this.url !== this.props.trackDetails.url){
                 this.url= this.props.trackDetails.url;
                 this.audio.src = this.props.trackDetails.url;
+                this.slider.value = 0;
             }
 
             this.audio.play();
@@ -84,6 +91,12 @@ class Player extends Component {
                 fetchLocalStorageData_ID('RecentID')
             }
 
+            this.audio.onplay = () => {
+                this.currentTimeInterval = setInterval( () => {
+                    this.slider.value = this.audio.currentTime;
+                }, 500);
+            };
+
             this.audio.addEventListener('timeupdate', () => {
                 if(this.audio != null){
                     this.setState({ 
@@ -91,13 +104,18 @@ class Player extends Component {
                     });
                 }
             }, true);
+
+            this.slider.onchange = (e) => {
+                clearInterval(this.currentTimeInterval);
+                this.audio.currentTime = e.target.value;
+            };
             
-            this.setState({ isPlayed: true, playing: true})
+            this.setState({ isPlayed: true, playing: true, duration: this.audio.duration})
 
         } else {
-            this.setState({ playing: false });
             clearInterval(this.currentTimeInterval);
             this.audio.pause();
+            this.setState({ playing: false });
         }
     }
 
@@ -118,9 +136,12 @@ class Player extends Component {
                     <div className="progress-time">
                         <div>
                             {formatTime(this.audio.currentTime)} / {formatTime(this.audio.duration)}
-                        </div>
-                        <div className = "progressBar">
-                            <Track percentage={this.state.percentage} />
+                        </div> {'    '}
+                        <div>
+                            <input ref={(slider) => { this.slider = slider }}
+                                type="range"
+                                name="points"
+                                min="0" max={this.state.duration} /> 
                         </div>
                     </div>
                     <div className="btn-container">

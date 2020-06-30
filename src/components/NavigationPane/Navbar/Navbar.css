@@ -1,10 +1,9 @@
 .navbar{
     position: fixed;
-    top: 0;
     width: 100%;
-    background: #8E0E00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(#00c9ff, #92fe9d);
+    background: -webkit-linear-gradient(to right, #00c9ff, #92fe9d);
+    background: linear-gradient(to right,#00c9ff, #92fe9d);
 }
 
 .navbar__navigation{
@@ -26,7 +25,11 @@
     padding: 0;
 }
 
-@media (max-width: 768px){
+/*@media (max-width: 768px){
+    .navbar {
+        bottom: 0;
+    }
+
     .navbar_navigation-items{
         display: flex;
     }
@@ -37,6 +40,36 @@
 }
 
 @media (min-width: 760px){
+    .navbar {
+        bottom: 0
+    }
+    .navbarToggleButton{
+        display: flex;
+    }
+
+    .navbar__logo{
+        margin-left: 0;
+        
+    }
+}*/
+
+@media only screen and (max-width: 1024px){
+    .navbar {
+        bottom: 0;
+    }
+    .navbarToggleButton{
+        display: flex;
+    }
+
+    .navbar__logo{
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1025px){
+    .navbar {
+        top: 0
+    }
     .navbarToggleButton{
         display: none;
     }

@@ -3,7 +3,7 @@ import axios from 'axios';
 require('dotenv').config();
 
 const baseURL = 'https://deezerdevs-deezer.p.rapidapi.com';
-const API_KEY = '6383b094efmsh3f2c07d033752c5p15979bjsnab48664d82cb';
+const API_KEY = `${process.env.REACT_APP_API_KEY}`;//'6383b094efmsh3f2c07d033752c5p15979bjsnab48664d82cb';
 
 const headers = {
     "headers":{
