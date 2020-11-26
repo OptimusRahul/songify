@@ -82,4 +82,8 @@
     color: white;
 }
 
-/*#272626*/
+@media only screen and (orientation: landscape) and (max-height: 420px){
+    .menu--body__footerBtn{
+        display: none;
+    } 
+}

@@ -86,7 +86,7 @@ function favoriteSelectedSongs(currentSong: any) {
 }
 
 const Player = ({ currentSong, nextSong, previousSong, getSongStatus, 
-                favorite, autoPlay, setAutoPlay, removeFavorite }: any) => {
+                favorite, autoPlay, setAutoPlay, removeFavorite, songs }: any) => {
     const [play, setPlay] = useState(false);
     // const [autoPlay, setAutoPlay] = useState(false);
     const [fav, setFav] = useState(false);
@@ -187,49 +187,55 @@ const Player = ({ currentSong, nextSong, previousSong, getSongStatus,
         setFav(!fav);
     };
 
+    //let error = localStorage.getItem(errorID) === 'true' ? true : false;
+
     return (
-        <div className="player--container">
-            <audio src={currentSong.preview} ref={audioRef} />
-            <div className="player--container__header">
-                <div className="player--container__header--title">{title}</div> {' '} 
-                <div onClick={onSetFav} className="player--container__header--heart">
-                    {favoriteSongsID.includes(currentSong.id) ? 
-                        <Favorite style={{ color: 'red'}} onClick={() => {favoriteSelectedSongs(currentSong)}}/> : 
-                        <FavoriteBorder style={{ color: 'red'}} onClick={() => {favoriteSelectedSongs(currentSong)}}/>
-                    }
+        <>  
+        {!songs ? null :
+            <div className="player--container">
+                <audio src={currentSong.preview} ref={audioRef} />
+                <div className="player--container__header">
+                    <div className="player--container__header--title">{title}</div> {' '} 
+                    <div onClick={onSetFav} className="player--container__header--heart">
+                        {favoriteSongsID.includes(currentSong.id) ? 
+                            <Favorite style={{ color: 'red'}} onClick={() => {favoriteSelectedSongs(currentSong)}}/> : 
+                            <FavoriteBorder style={{ color: 'red'}} onClick={() => {favoriteSelectedSongs(currentSong)}}/>
+                        }
+                    </div>
+                </div>
+                <div className="player--container__progress">
+                    <div className="player--container__progress--time">
+                        {audioRef.current && formatTime(currentTime)} : { audioRef.current && formatTime(audioRef.current.duration) }
+                    </div>
+                    <div className="player--container__progress--bar">
+                    <div className="bar__progress"
+                        style={{ background: `linear-gradient(to right, orange ${progress}%, white 0)` }} 
+                        onMouseDown={e => handleTimeDrag(e)}>
+                        <span
+                            className="bar__progress__knob"
+                            style={{ left: `${progress - 2}%` }}
+                        />
+                    </div>
+                    </div>
+                </div>
+                <div className="player--container__controls">
+                    <button 
+                        className="player--container__prevBtn player--console__btnStyle player--container__ctrlPositon"
+                        onClick={previousSong}>
+                        <NavigateBefore />
+                    </button>
+                    <button className="player--container__playBtn player--console__btnStyle player--container__ctrlPositon" onClick={onMusicState}>
+                        {play ? <Pause  /> : <PlayArrow />}
+                    </button>
+                    <button
+                        className="player--container__nextBtn player--console__btnStyle player--container__ctrlPositon"
+                        onClick={nextSong}>
+                        <NavigateNext />
+                    </button>
                 </div>
             </div>
-            <div className="player--container__progress">
-                <div className="player--container__progress--time">
-                    {audioRef.current && formatTime(currentTime)} : { audioRef.current && formatTime(audioRef.current.duration) }
-                </div>
-                <div className="player--container__progress--bar">
-                <div className="bar__progress"
-                    style={{ background: `linear-gradient(to right, orange ${progress}%, white 0)` }} 
-                    onMouseDown={e => handleTimeDrag(e)}>
-                    <span
-                        className="bar__progress__knob"
-                        style={{ left: `${progress - 2}%` }}
-                    />
-                </div>
-                </div>
-            </div>
-            <div className="player--container__controls">
-                <button 
-                    className="player--container__prevBtn player--console__btnStyle player--container__ctrlPositon"
-                    onClick={previousSong}>
-                    <NavigateBefore />
-                </button>
-                <button className="player--container__playBtn player--console__btnStyle player--container__ctrlPositon" onClick={onMusicState}>
-                    {play ? <Pause  /> : <PlayArrow />}
-                </button>
-                <button
-                    className="player--container__nextBtn player--console__btnStyle player--container__ctrlPositon"
-                    onClick={nextSong}>
-                    <NavigateNext />
-                </button>
-            </div>
-        </div>
+            }
+        </>
     );
 }
 

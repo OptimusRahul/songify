@@ -58,7 +58,7 @@ const Slider = ({songs, swiperIndex, getSongIndex}: any) => {
         <div className="swiper">
             <div className="swiper-container">
                 <div className="swiper-wrapper">
-                    { error ?
+                    { error || songs === null ?
                         (<>
                             <Spinner />
                         </>

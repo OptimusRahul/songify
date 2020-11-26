@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -20,6 +19,7 @@ import Menu from '../components/Section/Menu/menu';
 import Slider from '../components/Swiper/slider';
 import Player from '../components/Player/player';
 import List from '../components/Section/List/list';
+import Spinner from '../components/UI/Loader/Loader';
 
 import './container.css';
 
@@ -272,7 +272,7 @@ const Container = ()  => {
             <Grid className="songs--list" item xs={4}>
                 <Paper className={classes.paper}>
                   {songs === null ? 
-                    <CircularProgress /> :
+                    <Spinner /> :
                     <List 
                       songs={songs} 
                       getSongIndex={getSongIndex}

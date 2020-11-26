@@ -21,10 +21,11 @@ function getCategorySongs(item: string) {
                 favTracks.map((item: Array<Object> ) => {
                     return favSongs.push(item[1]);
                 });
+            return favSongs;
             } else {
                 window.alert('No Favorite Songs');
+                return "error";
             }
-            return favSongs;
         case menu[2].title:
             let recentSongs = [];
             let recentTracks = fetchLocalStorageData_tracks(recentSongIDMap);
@@ -32,10 +33,11 @@ function getCategorySongs(item: string) {
                 recentTracks.map((item: Array<Object> ) => {
                     return recentSongs.push(item[1]);
                 });
+                return recentSongs;
             } else {
                 window.alert('No Songs Played Yet!!!!');
+                return "error";
             }
-            return recentSongs;
         default:
             return('Invalid Option');
     }
@@ -50,9 +52,26 @@ const Menu = ({ getMenuOption, onClose }: any) => {
 
     const onSetChoosen = (item: any) => {
         const { title } = item;
-        if(getCategorySongs(title) === 'All Songs') getMenuOption(title, null);
-        else if(title === 'Yours Favorite') getMenuOption(title, getCategorySongs(title));
-        else getMenuOption(title, getCategorySongs(title));
+        if(title === 'All Songs') {
+            getMenuOption(title, null);
+        } else if(title === 'Yours Favorite') {
+            if(getCategorySongs(title) === 'error') {
+                getMenuOption(title, null);
+            } else {
+                getMenuOption(title, getCategorySongs(title));
+            }
+        } else if(title === 'Recently Played') {
+            if(getCategorySongs(title) === 'error') {
+                getMenuOption(title, null);
+            } else {
+                getMenuOption(title, getCategorySongs(title));
+            }
+        } else {
+
+        }
+        /*if(getCategorySongs(title) === 'All Songs') getMenuOption(title, null);
+        else if(getCategorySongs(title) === 'Yours Favorite') getMenuOption(title, getCategorySongs(title));
+        else getMenuOption(title, getCategorySongs(title));*/
         setChoosen(item);
         onClose();
     }
