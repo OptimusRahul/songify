@@ -1,0 +1,183 @@
+.player--container {
+    margin: 1.4rem;
+    border-radius: 20px;
+    background: #ececec;
+    box-shadow:  5px 5px 10px #a3a3a3,
+                -5px -5px 10px #ffffff;
+}
+
+
+.player--container__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    color: black;
+    margin-bottom: 5px;
+}
+
+.player--container__header--title {
+    display: flex;
+    border: none;
+    outline: none;
+
+    justify-content: center;
+
+    min-width: 10rem;
+    margin: 6px 0;
+    padding: 4px;
+
+    background: #ececec;
+    box-shadow:  5px 5px 10px #a3a3a3,
+                -5px -5px 10px #ffffff;
+    }
+
+@media only screen and (max-width: 420px) {
+    .player--container__progress--time {
+        min-width: 7rem;
+    }
+}
+
+/* @media only screen and (orientation: landscape) and (max-width: 850px) {
+    .player--container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+} */
+
+@media only screen and (max-width: 1023px) {
+    .player--container__header--title {
+        display: flex;
+        width: 100px;
+    }
+
+    .MuiDrawer-paper {
+        background: #ececec !important;
+    }
+}
+
+.player--container__header--heart{
+    border: none;
+    outline: none;
+    margin: 6px;
+    padding: 4px;
+    border-radius: 20px;
+    background: #ececec;
+    box-shadow:  5px 5px 10px #a3a3a3,
+                -5px -5px 10px #ffffff;
+}
+
+.player--container__progress {
+    color: black;
+    margin: 0 5px 5px 5px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player--container__progress--time {
+    border: none;
+    outline: none;
+    padding: 4px;
+    border-radius: 5px;
+    background: #ececec;
+    box-shadow:  5px 5px 10px #a3a3a3,
+                -5px -5px 10px #ffffff;
+}
+
+.player--container__progress--bar {
+    margin: 0 10px;
+    width: 78%;
+    height: 10px;
+    border-radius: 20px;
+    background: #ececec;
+    box-shadow: inset 5px 5px 10px #5e5e5e,
+                inset -5px -5px 10px #ffffff;
+}
+
+.bar {
+    user-select: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.bar__time {
+    color: white;
+    font-size: 16px;
+}
+
+.bar__progress {
+    flex: 1;
+    border-radius: 5px;
+    /*margin: 0 20px;*/
+    height: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.bar__progress__knob {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    border: 1.5px solid white;
+    border-radius: 50%;
+    background-color: orange;
+}
+
+.player--container__controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.player--container__ctrlPositon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player--container__prevBtn {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+
+.player--container__playBtn {
+    width: 45px;
+    height: 45px;
+    margin-right: 5px;
+}
+
+.player--container__nextBtn {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+
+.player--console__btnStyle {
+    border: none;
+    outline: none;
+
+    border-radius: 20px;
+    background: #ececec;
+    box-shadow:  5px 5px 10px #a3a3a3,
+                -5px -5px 10px #ffffff;
+}
+
+.player--console__btnStyle:hover {
+    border: none;
+    outline: none;
+
+    border-radius: 20px;
+    background: #ececec;
+    box-shadow: inset 5px 5px 10px #a3a3a3,
+                inset -5px -5px 10px #ffffff;
+}
