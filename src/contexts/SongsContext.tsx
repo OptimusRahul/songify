@@ -66,7 +66,7 @@ export class SongsProvider extends Component<any, any> {
             })
         }
 
-        this.setState({ error: false, songs: songsMap, currentSong, loading: false, totalSongs })
+        this.setState({ error: false, songs: songsMap, currentSong, loading: false, totalSongs, songIndex: 0,  activeMenu: menu[0].title, activeMenuIndex: 0})
     }
 
     defaultSongsPlaylist = async() => {
@@ -102,9 +102,12 @@ export class SongsProvider extends Component<any, any> {
     getFavorite = () => {
         let songsArr = Array.from(favoriteSongsMap.values());
         if(songsArr.length !== 0) {
-            this.setState({ songs: favoriteSongsMap });
+            let currentSong = songsArr[0];
+            let totalSongs = songsArr.length;
+            this.setState({ error: false, songs: favoriteSongsMap, currentSong, loading: false, totalSongs, songIndex: 0 });
         } else {
             this.fetchSongs();
+            this.setState({ loading: true });
         }
     }
 
@@ -126,8 +129,11 @@ export class SongsProvider extends Component<any, any> {
         favoriteSongsMap.delete(id);
         setLocalStorageData(favoriteSongIDArr, JSON.stringify(favoriteSongsArray));
         setLocalStorageData(favoriteSongIDMap, JSON.stringify(Array.from(favoriteSongsMap)));
-
-        this.setState({ favoriteSongsID: favoriteSongsArray });
+        if(favoriteSongsArray.length !== 0) {
+            this.setState({ favoriteSongsID: favoriteSongsArray });
+        } else {
+            this.fetchSongs();
+        }
     }
 
     getFavoriteID = () => this.state.favoriteSongsID;
@@ -147,7 +153,9 @@ export class SongsProvider extends Component<any, any> {
     getRecentSongs = () => {
         let recentSongsArr = Array.from(recentSongsMap.values());
         if(recentSongsArr.length !== 0) {
-            this.setState({ songs: recentSongsMap });
+            let totalSongs = recentSongsArr.length;
+            let currentSong = recentSongsArr[0];
+            this.setState({ error: false, songs: recentSongsMap, currentSong, loading: false, totalSongs, songIndex: 0 });
         } else {
             this.fetchSongs();
         }
