@@ -1,18 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Swiper from 'swiper';
 
-import Spinner from '../UI/Loader/Loader';
+import Context from '../../../contexts/SongsContext';
 
-import { textFormatter } from '../../utility/utility';
-import { localStorageConfiguration } from '../../config/config';
+import Spinner from '../../UI/Loader/Loader';
+import { textFormatter } from '../../../utility/utility';
 
 import 'swiper/css/swiper.min.css';
 import './slider.css';
 
-const { errorID } = localStorageConfiguration;
-
-const Slider = ({songs, swiperIndex, getSongIndex}: any) => {
+const Slider = () => {
+    const [songs, setSongs] = useState<Array<object>>([]);
+    
     const swiper = useRef<Swiper | null>(null);
+
+    const { setSongIndex, setCurrentSong, getSongs, getSongIndex, getLoading, getError } = useContext(Context);
+
+    const swiperIndex = getSongIndex();
+
+    const songsList = getSongs();
+
+    useEffect(() => {
+        setSongs(Array.from(songsList.values()));
+    }, [songsList]);
+
     useEffect(() => {
         swiper.current = new Swiper('.swiper-container', {
             effect: 'coverflow',
@@ -40,38 +51,34 @@ const Slider = ({songs, swiperIndex, getSongIndex}: any) => {
         });
     }, []);
 
-    const error = localStorage.getItem(errorID) === 'true' ? true : false;
-
     useEffect(() => { 
-        if(swiper.current !== null) {swiper.current.update()}
+        swiper.current.update()
     }, [songs]);
 
     useEffect(() => {
         if(swiper.current !== null ) swiper.current.slideTo(swiperIndex);
-    }, [swiperIndex]);
+    }, [swiperIndex, songsList]);
 
     const swiperHandler = (item: Object, index: number) => {
-        getSongIndex(index);
+        setSongIndex(index);
+        setCurrentSong(item);
     }
-
+    
     return (
         <div className="swiper">
             <div className="swiper-container">
                 <div className="swiper-wrapper">
-                    { error || songs === null ?
-                        (<>
-                            <Spinner />
-                        </>
-                        )
+                    { getError() || getLoading() || !songs.length ?
+                        <Spinner />
                         :
                         songs.map((item:any, i:number) => {
                             return (
                                 <div className="swiper-slide" key={i} onClick={() => swiperHandler(item, i)}>
                                     <div>
-                                        {textFormatter(item.album.title)}
+                                        {textFormatter(item.title)}
                                     </div>
                                     <div>
-                                        <img src={item.album.cover_big} alt={item.album.title} width="13rem" height="12rem"/>
+                                        <img src={item.coverBig} alt={item.title} width="13rem" height="12rem"/>
                                     </div>
                                 </div>
                             )

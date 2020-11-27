@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -10,16 +10,15 @@ import AlbumIcon from '@material-ui/icons/Album';
 import HomeIcon from '@material-ui/icons/Home';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 
-import { defaultPlayList, searchList } from '../api/index';
-import { localStorageConfiguration } from '../config/config';
-import { setLocalStorageData } from '../utility/utility';
+import { withRouter } from 'react-router-dom';
+
+import SongsContext from '../contexts/SongsContext';
 import Navigation from '../components/Navigation/Navigation';
 import Search from '../components/UI/Search/Search';
 import Menu from '../components/Section/Menu/menu';
-import Slider from '../components/Swiper/slider';
+import Slider from '../components/Section/Swiper/slider';
 import Player from '../components/Player/player';
 import List from '../components/Section/List/list';
-import Spinner from '../components/UI/Loader/Loader';
 
 import './container.css';
 
@@ -44,13 +43,8 @@ const lightMode = makeStyles((theme) => ({
 }));
 
 const Container = ()  => {
-  const [songs, setSongs] = useState([]);
-  const [searchedSong, setSearchedSong] = useState('');
-  const [swiperIndex, setSwiperIndex] = useState(0);
-  const [currentSong, setCurrentSong] = useState('');
-  const [status, setStatus] = useState(false);
-  const [fav, setFav] = useState(false);
-  const [autoPlay, setAutoPlay] = useState(false);
+  
+  const { fetchSongs, favoriteSongsPlaylist, recentSongsPlaylist } = useContext(SongsContext);
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -69,85 +63,14 @@ const Container = ()  => {
   const classes = lightMode();
 
   useEffect(() => {
-    (async function fetchSongs() {
-      try {
-        const res = await defaultPlayList();
-        setSongs(res.data.tracks.data)
-        setCurrentSong(res.data.tracks.data[0]);
-        setLocalStorageData(localStorageConfiguration.errorID, 'false');
-      } catch(error) {
-        setLocalStorageData(localStorageConfiguration.errorID, 'true');
-      }
-    })()
-  }, []);
+    fetchSongs(null);
+    favoriteSongsPlaylist();
+    recentSongsPlaylist();
+  }, [fetchSongs, favoriteSongsPlaylist, recentSongsPlaylist]);
 
-  useEffect(() => {
-    async function fetchSongs() {
-      try {
-        const res = await searchList(searchedSong);
-        setSongs(res.data.data);
-        setCurrentSong(res.data.data[0]);
-        setLocalStorageData(localStorageConfiguration.errorID, 'false');
-      }
-      catch(error) {
-        setSearchedSong('');
-        setLocalStorageData(localStorageConfiguration.errorID, 'true');
-      }
-    }
 
-    if(searchedSong !== '') {
-      fetchSongs();
-    }
-  }, [searchedSong]);
-
-  const getMenuOption = async(title: string, data: Array<Object>) => {
-    if(title === 'All Songs') {
-        try {
-          const res = await defaultPlayList();
-          setFav(false);
-          setSongs(res.data.tracks.data);
-          setCurrentSong(res.data.tracks.data[0])
-        }
-        catch(error) {
-          setSearchedSong('');
-        }
-
-    } else if(title === 'Yours Favorite'){
-      setFav(true);
-      setSongs(data);
-    } else {
-      setFav(false);
-      setSongs(data);
-    }
-  }
-
-  const getSearchedSong = (data: string) => setSearchedSong(data);
-
-  const getSongStatus = (status: boolean)  => setStatus(status);
-
-  const getSongIndex = (index:number) => {
-    setSwiperIndex(index);
-    setCurrentSong(songs[index]);
-  }
-
-  const nextSong = () => {
-    let nextIndex = swiperIndex + 1;
-    if(nextIndex < songs.length) {
-      setSwiperIndex(nextIndex);
-      setCurrentSong(songs[nextIndex])
-    }
-  }
-
-  const previousSong = () => {
-    let prevIndex = swiperIndex - 1;
-    if(prevIndex >= 0 ) {
-      setSwiperIndex(prevIndex);
-      setCurrentSong(songs[prevIndex]);
-    }
-  }
-
-  const removeFavorite = (song: Array<object>) => {
-    setSongs(song);
+  const renderSearchComponent = (close: any) => {
+    return (<Search onClose={close}/>);
   }
 
   return (
@@ -155,37 +78,17 @@ const Container = ()  => {
         <Grid container>
             <Grid className="menu--list" item xs={2}>
                 <Paper className={classes.paper}>
-                    <Menu getMenuOption={getMenuOption} setFav={setFav} onClose={() => {}}/>
+                    <Menu onClose={() => {}}/>
                 </Paper>
             </Grid>
             <Grid item xs={6} className="menu--container">
                 <Paper className={classes.paper}>
                     <div className="landscape--search">
-                      <Search 
-                        getName={getSearchedSong}
-                        desktop={true}
-                        open={false}
-                        onClose={() => {}}/>
-                      </div>
-                    <Slider 
-                      songs={songs} 
-                      swiperIndex={swiperIndex} 
-                      getSongIndex={getSongIndex}
-                      />
+                      {renderSearchComponent(()=>{})}
+                    </div>
+                    <Slider />
                       <div className="landscape--player">
-                        <Player
-                          swiper={false}
-                          autoPlay={autoPlay}
-                          setAutoPlay={setAutoPlay}
-                          favorite={fav}
-                          setFavorite={setFav}
-                          songs={songs} 
-                          currentSong={currentSong} 
-                          nextSong={nextSong} 
-                          previousSong={previousSong}
-                          getSongStatus={getSongStatus}
-                          removeFavorite={removeFavorite}
-                          onClose={() => {}}/>
+                        <Player onClose={() => {}}/>
                       </div>
                 </Paper>
                 
@@ -199,19 +102,7 @@ const Container = ()  => {
                       onClose={toggleDrawer('top', false)}
                       onOpen={toggleDrawer('top', true)} 
                       style={{ background: "#ececec" }}> 
-                      <Player
-                          swiper={state['top']}
-                          autoPlay={autoPlay}
-                          setAutoPlay={setAutoPlay}
-                          favorite={fav}
-                          setFavorite={setFav}
-                          currentSong={currentSong} 
-                          nextSong={nextSong} 
-                          previousSong={previousSong}
-                          getSongStatus={getSongStatus}
-                          songs={songs}
-                          removeFavorite={removeFavorite}
-                          onClose={toggleDrawer('top', false)}/> 
+                      <Player onClose={toggleDrawer('top', false)}/> 
                   </SwipeableDrawer>
                 </div>
 
@@ -225,7 +116,7 @@ const Container = ()  => {
                       onClose={toggleDrawer('left', false)}
                       onOpen={toggleDrawer('left', true)} 
                       style={{ background: "#ececec" }}> 
-                      <Menu getMenuOption={getMenuOption} onClose={toggleDrawer('left', false)}/>
+                      <Menu onClose={toggleDrawer('left', false)}/>
                   </SwipeableDrawer>
                 </div>
 
@@ -239,9 +130,7 @@ const Container = ()  => {
                       onClose={toggleDrawer('bottom', false)}
                       onOpen={toggleDrawer('bottom', true)} 
                       style={{ background: "#ececec" }}> 
-                      <Search 
-                          getName={getSearchedSong}
-                          onClose={toggleDrawer('bottom', false)}/>
+                      <Search onClose={toggleDrawer('bottom', false)} />
                   </SwipeableDrawer>
                 </div>
 
@@ -255,30 +144,15 @@ const Container = ()  => {
                       onClose={toggleDrawer('right', false)}
                       onOpen={toggleDrawer('right', true)} 
                       style={{ background: "#ececec" }}> 
-                      <List 
-                          songs={songs} 
-                          getSongIndex={getSongIndex}
-                          status={status}
-                          onClose={toggleDrawer('right', false)}/>
+                      <List onClose={toggleDrawer('right', false)}/>
                   </SwipeableDrawer>
                 </div>
 
-                <Navigation
-                  getMenuOption={getMenuOption} 
-                  songs={songs} 
-                  getSongIndex={getSongIndex}
-                  status={status}/>
+                <Navigation />
             </Grid>
             <Grid className="songs--list" item xs={4}>
                 <Paper className={classes.paper}>
-                  {songs === null ? 
-                    <Spinner /> :
-                    <List 
-                      songs={songs} 
-                      getSongIndex={getSongIndex}
-                      status={status}
-                      onClose={() => {}} /> 
-                  }
+                  <List onClose={() => {}} /> 
                 </Paper>
             </Grid>
         </Grid>
@@ -286,4 +160,4 @@ const Container = ()  => {
   );
 }
 
-export default Container;
+export default withRouter(Container);

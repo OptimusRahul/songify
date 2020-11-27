@@ -1,79 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import HighlightIcon from '@material-ui/icons/Highlight';
 
 import MenuItem from './MenuItem/menuItem';
-import { applicatonConfiguration, localStorageConfiguration } from '../../../config/config';
-import { fetchLocalStorageData_tracks } from '../../../utility/utility';
+import Context from '../../../contexts/SongsContext';
+
+import { applicatonConfiguration } from '../../../config/config';
 import './menu.css';
 
-const { recentSongIDMap, favoriteSongIDMap } = localStorageConfiguration;
-
-function getCategorySongs(item: string) {
-    const { menu } = applicatonConfiguration;
-    switch(item) {
-        case menu[0].title:
-            return item;
-        case menu[1].title:
-            let favSongs = [];
-            let favTracks = fetchLocalStorageData_tracks(favoriteSongIDMap);
-            if(favTracks !== null && favTracks !== undefined) {
-                favTracks.map((item: Array<Object> ) => {
-                    return favSongs.push(item[1]);
-                });
-            return favSongs;
-            } else {
-                window.alert('No Favorite Songs');
-                return "error";
-            }
-        case menu[2].title:
-            let recentSongs = [];
-            let recentTracks = fetchLocalStorageData_tracks(recentSongIDMap);
-            if(recentTracks !== null && recentTracks !== undefined){
-                recentTracks.map((item: Array<Object> ) => {
-                    return recentSongs.push(item[1]);
-                });
-                return recentSongs;
-            } else {
-                window.alert('No Songs Played Yet!!!!');
-                return "error";
-            }
-        default:
-            return('Invalid Option');
-    }
-}
-
-const Menu = ({ getMenuOption, onClose }: any) => {
+const Menu = ({ onClose }: any) => {
     const [darkMode, setDarkMode] = useState(false);
-    const [choosen, setChoosen] = useState();
     let darkModeBtn = darkMode ? 'Dark' : 'Light';
+
+    const { getMenuOption, getActiveMenu, setActiveMenu, fetchSongs, getRecentSongs,
+            getActiveMenuIndex, setActiveMenuIndex, getFavorite, getFavoriteID, getRecentID } = useContext(Context);
+
+    const menuOptions = getMenuOption();
 
     const onModeChangeHandler = () => setDarkMode(!darkMode);
 
     const onSetChoosen = (item: any) => {
         const { title } = item;
-        if(title === 'All Songs') {
-            getMenuOption(title, null);
-        } else if(title === 'Yours Favorite') {
-            if(getCategorySongs(title) === 'error') {
-                getMenuOption(title, null);
-            } else {
-                getMenuOption(title, getCategorySongs(title));
-            }
-        } else if(title === 'Recently Played') {
-            if(getCategorySongs(title) === 'error') {
-                getMenuOption(title, null);
-            } else {
-                getMenuOption(title, getCategorySongs(title));
-            }
-        } else {
 
+        switch(title) {
+            case menuOptions[0]: // All Songs
+                setActiveMenu(menuOptions[0]);
+                setActiveMenuIndex(0);
+                fetchSongs();
+                onClose();
+                break;
+            case menuOptions[1]: // Yours Favorite
+                const favArr = getFavoriteID();
+                if(!favArr || favArr.length === 0) {
+                    window.alert(`No favorite songs selected yet!!!`);
+                    setActiveMenu(menuOptions[0]);
+                    setActiveMenuIndex(0);
+                    onClose();
+                } else  {
+                    setActiveMenu(menuOptions[1]);
+                    setActiveMenuIndex(1);
+                    getFavorite();
+                    onClose();
+                }
+                break;
+            case menuOptions[2]: // Recent Songs
+                const recArr = getRecentID();
+                if(!recArr || recArr.length === 0) {
+                    window.alert(`None of the played yet!!!`);
+                    setActiveMenu(menuOptions[0]);
+                    setActiveMenuIndex(0);
+                    onClose();
+                } else {
+                    setActiveMenu(menuOptions[2]);
+                    setActiveMenuIndex(2);
+                    getRecentSongs();
+                    onClose();
+                }
+                break;
+            default:
+                onClose();
         }
-        /*if(getCategorySongs(title) === 'All Songs') getMenuOption(title, null);
-        else if(getCategorySongs(title) === 'Yours Favorite') getMenuOption(title, getCategorySongs(title));
-        else getMenuOption(title, getCategorySongs(title));*/
-        setChoosen(item);
-        onClose();
     }
 
     return (
@@ -90,9 +77,10 @@ const Menu = ({ getMenuOption, onClose }: any) => {
                         <MenuItem
                             key={i} 
                             item={item} 
-                            numactive={i} 
-                            active={item === choosen} 
-                            onClick={() => onSetChoosen(item)}/>
+                            numactive={getActiveMenuIndex()} 
+                            active={item.title === getActiveMenu()}
+                            onClick={() => onSetChoosen(item)}
+                            />
                     )
                 })}
             </div>
@@ -105,4 +93,4 @@ const Menu = ({ getMenuOption, onClose }: any) => {
     );
 }
 
-export default Menu;
+export default withRouter(Menu);

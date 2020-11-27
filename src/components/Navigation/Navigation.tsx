@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import HomeIcon from '@material-ui/icons/Home';
@@ -13,14 +14,9 @@ import './Navigation.css';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-const Navigation = ({ getMenuOption, songs, getSongIndex, status }: any) => {
+const Navigation = ({ getMenuOption }: any) => {
 
-    const [state, setState] = useState({
-        top: false,
-        left: false,
-        bottom: false,
-        right: false,
-      });
+    const [state, setState] = useState({ top: false, left: false, bottom: false, right: false });
 
     const toggleDrawer = (anchor: Anchor, open: boolean) => ( event: React.KeyboardEvent | React.MouseEvent ) => {
         if ( event && event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
@@ -64,11 +60,7 @@ const Navigation = ({ getMenuOption, songs, getSongIndex, status }: any) => {
                         onClose={toggleDrawer('right', false)}
                         onOpen={toggleDrawer('right', true)} 
                         style={{ background: "#ececec" }}> 
-                            <List 
-                                songs={songs} 
-                                getSongIndex={getSongIndex}
-                                status={status}
-                                onClose={toggleDrawer('right', false)}/>  
+                            <List onClose={toggleDrawer('right', false)}/>
                     </SwipeableDrawer>
                 </div>
             </div>
@@ -76,4 +68,4 @@ const Navigation = ({ getMenuOption, songs, getSongIndex, status }: any) => {
     );
 };
 
-export default Navigation;
+export default withRouter(Navigation);

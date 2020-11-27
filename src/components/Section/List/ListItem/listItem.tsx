@@ -10,15 +10,11 @@ const ListItem = ({ item, num, active, onClick }: any) => {
             onClick={onClick} >
             <div className="songs--container__body">
                 <span className="songs--container__avatar">
-                    <img src={item.album.cover_small} alt={item.album.title} width='20px' height='20px'/>
+                    <img src={item.coverSmall} alt={item.title} width='20px' height='20px'/>
                 </span>
                 <div className="songs--container__details">
-                    {textFormatter(item.album.title)}
-                    {item.album.author}
+                    {textFormatter(item.title)}
                 </div>
-                <span className="songs--container__timer">
-                    
-                </span>
             </div>
         </div>
     )

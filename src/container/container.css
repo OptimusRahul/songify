@@ -135,6 +135,6 @@
     }
 
     .MuiGrid-grid-xs-6 {
-        max-width: 100% !important;
+        min-width: 100% !important;
     }
 }

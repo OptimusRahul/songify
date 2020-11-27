@@ -1,23 +1,25 @@
-import React, { useState} from 'react';
-
+import React, { useState, useContext } from 'react';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 
-import { localStorageConfiguration } from '../../../config/config';
+import Context from '../../../contexts/SongsContext';
 
 import Spinner from '../../UI/Loader/Loader';
 import ListItem from './ListItem/listItem';
 import './list.css';
 
-const List = ({songs, getSongIndex, onClose }: any) => {
+const List = ({ onClose }: any) => {
     const [choosen, setChoosen] = useState();
 
-    const handleClick = (i: number) => {
-        getSongIndex(i);
+    const { getSongs, setSongIndex, setCurrentSong, getLoading, getError } = useContext(Context);
+
+    const songs = Array.from(getSongs().values());
+
+    const handleClick = (item: any, i: number) => {
+        const index = Array.from(getSongs().keys()).indexOf(item.id);
+        setSongIndex(index);
+        setCurrentSong(item);
         onClose();
     }
-
-    const { errorID } = localStorageConfiguration;
-    let error = localStorage.getItem(errorID) === 'true' ? true : false;
 
     return(
         <div className="list--container">
@@ -25,12 +27,12 @@ const List = ({songs, getSongIndex, onClose }: any) => {
                 <QueueMusicIcon /> {' '} Songs List
             </div>
             <div className="songs--list__container songs--list__lightMode">
-                { error ?
+                { getError() || getLoading() ?
                     <Spinner />
                     :
                     songs.map((item:any, i:number) => {
                         return (
-                            <div key={i} onClick={() => handleClick(i)}>
+                            <div key={i} onClick={() => handleClick(item, i)}>
                                 <ListItem item={item} num={i} active={item === choosen} onClick={() => setChoosen(item)}/>
                             </div>
                         );
