@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import HomeIcon from '@material-ui/icons/Home';
@@ -68,4 +67,4 @@ const Navigation = ({ getMenuOption }: any) => {
     );
 };
 
-export default withRouter(Navigation);
+export default Navigation;

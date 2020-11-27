@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import { SongsProvider } from './contexts/SongsContext';
 
@@ -11,9 +10,7 @@ function App() {
   return (
     <>
       <SongsProvider>
-        <BrowserRouter>
           <Container />
-        </BrowserRouter>
       </SongsProvider>
     </>
   );

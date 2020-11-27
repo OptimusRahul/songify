@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 
 import HighlightIcon from '@material-ui/icons/Highlight';
 
@@ -93,4 +92,4 @@ const Menu = ({ onClose }: any) => {
     );
 }
 
-export default withRouter(Menu);
+export default Menu;

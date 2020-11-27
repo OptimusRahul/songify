@@ -10,8 +10,6 @@ import AlbumIcon from '@material-ui/icons/Album';
 import HomeIcon from '@material-ui/icons/Home';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 
-import { withRouter } from 'react-router-dom';
-
 import SongsContext from '../contexts/SongsContext';
 import Navigation from '../components/Navigation/Navigation';
 import Search from '../components/UI/Search/Search';
@@ -160,4 +158,4 @@ const Container = ()  => {
   );
 }
 
-export default withRouter(Container);
+export default Container;
