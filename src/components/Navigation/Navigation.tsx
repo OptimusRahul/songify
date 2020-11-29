@@ -13,7 +13,7 @@ import './Navigation.css';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-const Navigation = ({ getMenuOption }: any) => {
+const Navigation = () => {
 
     const [state, setState] = useState({ top: false, left: false, bottom: false, right: false });
 
@@ -21,26 +21,31 @@ const Navigation = ({ getMenuOption }: any) => {
         if ( event && event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
           return;
         }
+        
         setState({ ...state, [anchor]: open });
-      };
+    };
 
-      return (
+    const renderMobileViewComponents: Function = (direction: Anchor, iconType: any , component: React.FC) => {
+        return (
+            <>
+                {iconType}
+                <SwipeableDrawer
+                    anchor={direction}
+                    open={state[direction]}
+                    onClose={toggleDrawer(direction, false)}
+                    onOpen={toggleDrawer(direction, true)} 
+                    style={{ background: "#ececec" }}> 
+                {component}
+                </SwipeableDrawer>
+          </>
+        )   
+    };
+
+    return (
         <div className="navbar">
             <div className="navbar__navigation">
                 <div className="navbarToggleButton">
-                    <HomeIcon onClick={toggleDrawer('left', true)}/>
-                    <div>
-                        <SwipeableDrawer
-                            anchor={'left'}
-                            open={state['left']}
-                            onClose={toggleDrawer('left', false)}
-                            onOpen={toggleDrawer('left', true)} 
-                            style={{ background: "#ececec" }}> 
-                            <Menu 
-                                getMenuOption={getMenuOption} 
-                                onClose={toggleDrawer('left', false)}/> 
-                        </SwipeableDrawer>
-                    </div>
+                    {renderMobileViewComponents('left', <HomeIcon onClick={toggleDrawer('left', true)} />, <Menu onClose={toggleDrawer('left', false)} /> )}
                 </div>
             </div>
 
@@ -52,15 +57,7 @@ const Navigation = ({ getMenuOption }: any) => {
 
             <div className="navbar__navigation">
                 <div className="navbarToggleButton">
-                    <QueueMusicIcon onClick={toggleDrawer('right', true)}/>
-                    <SwipeableDrawer
-                        anchor={'right'}
-                        open={state['right']}
-                        onClose={toggleDrawer('right', false)}
-                        onOpen={toggleDrawer('right', true)} 
-                        style={{ background: "#ececec" }}> 
-                            <List onClose={toggleDrawer('right', false)}/>
-                    </SwipeableDrawer>
+                    {renderMobileViewComponents('right', <QueueMusicIcon onClick={toggleDrawer('right', true)}/>, <List onClose={toggleDrawer('right', false)}/> )}
                 </div>
             </div>
         </div>
