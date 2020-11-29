@@ -71,6 +71,24 @@ const Container = ()  => {
     return (<Search onClose={close}/>);
   }
 
+  const renderMobileViewComponents: Function = (direction: Anchor, iconType: any , componentName: string, component: React.FC) => {
+    return (
+      <div className={`landscape--${componentName}Btn`}>
+        <div className="music--icon">
+            {iconType}
+        </div>
+        <SwipeableDrawer
+            anchor={direction}
+            open={state[direction]}
+            onClose={toggleDrawer(direction, false)}
+            onOpen={toggleDrawer(direction, true)} 
+            style={{ background: "#ececec" }}> 
+            {component}
+        </SwipeableDrawer>
+      </div>
+    )
+  }
+
   return (
     <div className={classes.root}>
         <Grid container>
@@ -90,61 +108,10 @@ const Container = ()  => {
                       </div>
                 </Paper>
                 
-                <div className="landscape--musicBtn">
-                  <div className="music--icon">
-                      <AlbumIcon onClick={toggleDrawer('top', true)} />
-                  </div>
-                  <SwipeableDrawer
-                      anchor={'top'}
-                      open={state['top']}
-                      onClose={toggleDrawer('top', false)}
-                      onOpen={toggleDrawer('top', true)} 
-                      style={{ background: "#ececec" }}> 
-                      <Player onClose={toggleDrawer('top', false)}/> 
-                  </SwipeableDrawer>
-                </div>
-
-                <div className="landscape--menuBtn">
-                  <div className="music--icon">
-                      <HomeIcon onClick={toggleDrawer('left', true)} />
-                  </div>
-                  <SwipeableDrawer
-                      anchor={'left'}
-                      open={state['left']}
-                      onClose={toggleDrawer('left', false)}
-                      onOpen={toggleDrawer('left', true)} 
-                      style={{ background: "#ececec" }}> 
-                      <Menu onClose={toggleDrawer('left', false)}/>
-                  </SwipeableDrawer>
-                </div>
-
-                <div className="landscape--searchBtn">
-                  <div className="music--icon">
-                      <SearchIcon onClick={toggleDrawer('bottom', true)} display="flex"/>
-                  </div>
-                  <SwipeableDrawer
-                      anchor={'bottom'}
-                      open={state['bottom']}
-                      onClose={toggleDrawer('bottom', false)}
-                      onOpen={toggleDrawer('bottom', true)} 
-                      style={{ background: "#ececec" }}> 
-                      <Search onClose={toggleDrawer('bottom', false)} />
-                  </SwipeableDrawer>
-                </div>
-
-                <div className="landscape--listBtn">
-                  <div className="music--icon">
-                      <QueueMusicIcon onClick={toggleDrawer('right', true)} />
-                  </div>
-                  <SwipeableDrawer
-                      anchor={'right'}
-                      open={state['right']}
-                      onClose={toggleDrawer('right', false)}
-                      onOpen={toggleDrawer('right', true)} 
-                      style={{ background: "#ececec" }}> 
-                      <List onClose={toggleDrawer('right', false)}/>
-                  </SwipeableDrawer>
-                </div>
+                {renderMobileViewComponents('top', <AlbumIcon onClick={toggleDrawer('top', true)} />, 'music', <Player onClose={toggleDrawer('top', false)}/> )}
+                {renderMobileViewComponents('left', <HomeIcon onClick={toggleDrawer('left', true)} />, 'menu', <Menu onClose={toggleDrawer('left', false)}/> )}
+                {renderMobileViewComponents('bottom', <SearchIcon onClick={toggleDrawer('bottom', true)} display="flex"/>, 'search', <Search onClose={toggleDrawer('bottom', false)} /> )}
+                {renderMobileViewComponents('right', <QueueMusicIcon onClick={toggleDrawer('right', true)} /> , 'list', <List onClose={toggleDrawer('right', false)}/>)}
 
                 <Navigation />
             </Grid>
