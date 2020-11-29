@@ -33,8 +33,8 @@ const Menu = ({ onClose }: any) => {
                 const favArr = getFavoriteID();
                 if(!favArr || favArr.length === 0) {
                     window.alert(`No favorite songs selected yet!!!`);
-                    setActiveMenu(menuOptions[0]);
-                    setActiveMenuIndex(0);
+                    setActiveMenu(menuOptions[getActiveMenuIndex()]);
+                    setActiveMenuIndex(getActiveMenuIndex());
                     onClose();
                 } else  {
                     setActiveMenu(menuOptions[1]);
@@ -47,8 +47,8 @@ const Menu = ({ onClose }: any) => {
                 const recArr = getRecentID();
                 if(!recArr || recArr.length === 0) {
                     window.alert(`None of the played yet!!!`);
-                    setActiveMenu(menuOptions[0]);
-                    setActiveMenuIndex(0);
+                    setActiveMenu(menuOptions[getActiveMenuIndex()]);
+                    setActiveMenuIndex(getActiveMenuIndex());
                     onClose();
                 } else {
                     setActiveMenu(menuOptions[2]);
