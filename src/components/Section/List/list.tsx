@@ -7,40 +7,50 @@ import Spinner from '../../UI/Loader/Loader';
 import ListItem from './ListItem/listItem';
 import './list.css';
 
-const List = ({ onClose }: any) => {
-    const [choosen, setChoosen] = useState();
+function List({ onClose }: any) {
+  const [choosen, setChoosen] = useState();
 
-    const { getSongs, setSongIndex, setCurrentSong, getLoading, getError } = useContext(Context);
+  const { getSongs, setSongIndex, setCurrentSong, getLoading, getError } = useContext(Context);
 
-    const songs = Array.from(getSongs().values());
+  const songs = Array.from(getSongs().values());
 
-    const handleClick = (item: any, i: number) => {
-        const index = Array.from(getSongs().keys()).indexOf(item.id);
-        setSongIndex(index);
-        setCurrentSong(item);
-        onClose();
-    }
+  const handleClick = (item: any, i: number) => {
+    const index = Array.from(getSongs().keys()).indexOf(item.id);
+    setSongIndex(index);
+    setCurrentSong(item);
+    onClose();
+  };
 
-    return(
-        <div className="list--container">
-            <div className="songs--container__heading songs--list__lightMode">
-                <QueueMusicIcon /> {' '} Songs List
-            </div>
-            <div className="songs--list__container songs--list__lightMode">
-                { getError() || getLoading() ?
-                    <Spinner />
-                    :
-                    songs.map((item:any, i:number) => {
-                        return (
-                            <div key={i} onClick={() => handleClick(item, i)}>
-                                <ListItem item={item} num={i} active={item === choosen} onClick={() => setChoosen(item)}/>
-                            </div>
-                        );
-                    })
-                }
-            </div>
-        </div>
-    );
+  return (
+    <div className="list--container">
+      <div className="songs--container__heading songs--list__lightMode">
+        <QueueMusicIcon /> Songs List
+      </div>
+      <div className="songs--list__container songs--list__lightMode">
+        {getError() || getLoading() ? (
+          <Spinner />
+        ) : (
+          songs.map((item: any, i: number) => {
+            return (
+              <div
+                role="button"
+                tabIndex={0}
+                key={i}
+                onClick={() => handleClick(item, i)}
+                onKeyPress={() => ({})}>
+                <ListItem
+                  item={item}
+                  num={i}
+                  active={item === choosen}
+                  onClick={() => setChoosen(item)}
+                />
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default List;
