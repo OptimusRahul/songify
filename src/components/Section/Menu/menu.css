@@ -1,89 +1,87 @@
 .menu {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .menu--container__lightMode {
-    border-radius: 10px;
-    background: #ececec;
-    box-shadow:  5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff;
+  border-radius: 10px;
+  background: #ececec;
+  box-shadow: 5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff;
 }
 
 .MuiDrawer-paper {
-    background: #ececec !important;
+  background: #ececec !important;
 }
 
 .menu--header__text {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
 
-    color: black;
-    height: 10rem;
+  color: black;
+  height: 10rem;
 
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .menu--header__text img {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .menu--header__container {
-    height: 10rem;
+  height: 10rem;
 }
 
 .menu--body__container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-    height: calc(100vh - 15rem);
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  height: calc(100vh - 15rem);
 }
 
 .menu--body__list {
-    margin: 1rem 0;
-    padding: 1rem;
-    justify-content: space-between;
+  margin: 1rem 0;
+  padding: 1rem;
+  justify-content: space-between;
 
-    color: #000;
-    cursor: pointer;
+  color: #000;
+  cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: left;
+  display: flex;
+  align-items: center;
+  justify-content: left;
 }
 
 .menu--body__list-selected {
-    border-radius: 10px;
-    background: #ececec;
-    box-shadow: inset 5px 5px 10px #c2c2c2, inset -5px -5px 10px #ffffff;
-   
+  border-radius: 10px;
+  background: #ececec;
+  box-shadow: inset 5px 5px 10px #c2c2c2, inset -5px -5px 10px #ffffff;
 }
 
 .menu--body__footerBtn {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 
-    border-radius: 20px;
-    background: #ececec;
-    box-shadow:  5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff;
-
+  border-radius: 20px;
+  background: #ececec;
+  box-shadow: 5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff;
 }
 
 .menu--body__footerBtnLight {
-    color: yellow;
+  color: yellow;
 }
 
 .menu--body__footerBtnDark {
-    color: white;
+  color: white;
 }
 
-@media only screen and (orientation: landscape) and (max-height: 420px){
-    .menu--body__footerBtn{
-        display: none;
-    } 
+@media only screen and (orientation: landscape) and (max-height: 420px) {
+  .menu--body__footerBtn {
+    display: none;
+  }
 }

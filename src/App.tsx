@@ -3,16 +3,15 @@ import React from 'react';
 import { SongsProvider } from './contexts/SongsContext';
 
 import Container from './container/container';
-import 'swiper/css/swiper.min.css';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css';
 import './App.css';
 
 function App() {
   return (
-    <>
-      <SongsProvider>
-          <Container />
-      </SongsProvider>
-    </>
+    <SongsProvider>
+      <Container />
+    </SongsProvider>
   );
 }
 

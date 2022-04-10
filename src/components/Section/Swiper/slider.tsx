@@ -6,91 +6,97 @@ import Context from '../../../contexts/SongsContext';
 import Spinner from '../../UI/Loader/Loader';
 import { textFormatter } from '../../../utility/utility';
 
-import 'swiper/css/swiper.min.css';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css';
 import './slider.css';
 
-const Slider = () => {
-    const [songs, setSongs] = useState<Array<object>>([]);
-    
-    const swiper = useRef<Swiper | null>(null);
+function Slider() {
+  const [songs, setSongs] = useState<Array<object>>([]);
 
-    const { setSongIndex, setCurrentSong, getSongs, getSongIndex, getLoading, getError } = useContext(Context);
+  const swiper = useRef<Swiper | null>(null);
 
-    const swiperIndex = getSongIndex();
+  const { setSongIndex, setCurrentSong, getSongs, getSongIndex, getLoading, getError } =
+    useContext(Context);
 
-    const songsList = getSongs();
+  const swiperIndex = getSongIndex();
 
-    useEffect(() => {
-        setSongs(Array.from(songsList.values()));
-    }, [songsList]);
+  const songsList = getSongs();
 
-    useEffect(() => {
-        swiper.current = new Swiper('.swiper-container', {
-            effect: 'coverflow',
-            centeredSlides: true,
-            slidesPerView: 'auto',
-            updateOnWindowResize: true,
-            followFinger: true,
-            coverflowEffect: {
-                rotate: 20,
-                stretch: 0,
-                depth: 100,
-                modifier: 1,
-                slideShadows: false
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            scrollbar: {
-                el: '.swiper-scrollbar',
-                draggable: true
-            },
-            observer: true,
-            observeParents: true,
-        });
-    }, []);
+  useEffect(() => {
+    setSongs(Array.from(songsList.values()));
+  }, [songsList]);
 
-    useEffect(() => { 
-        swiper.current.update()
-    }, [songs]);
+  useEffect(() => {
+    swiper.current = new Swiper('.swiper-container', {
+      effect: 'coverflow',
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      updateOnWindowResize: true,
+      followFinger: true,
+      coverflowEffect: {
+        rotate: 20,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: false
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      scrollbar: {
+        el: '.swiper-scrollbar',
+        draggable: true
+      },
+      observer: true,
+      observeParents: true
+    });
+  }, []);
 
-    useEffect(() => {
-        if(swiper.current !== null ) swiper.current.slideTo(swiperIndex);
-    }, [swiperIndex, songsList]);
+  useEffect(() => {
+    swiper.current.update();
+  }, [songs]);
 
-    const swiperHandler = (item: Object, index: number) => {
-        setSongIndex(index);
-        setCurrentSong(item);
-    }
-    
-    return (
-        <div className="swiper">
-            <div className="swiper-container">
-                <div className="swiper-wrapper">
-                    { getError() || getLoading() || !songs.length ?
-                        <Spinner />
-                        :
-                        songs.map((item:any, i:number) => {
-                            return (
-                                <div className="swiper-slide" key={i} onClick={() => swiperHandler(item, i)}>
-                                    <div>
-                                        {textFormatter(item.title)}
-                                    </div>
-                                    <div>
-                                        <img src={item.coverBig} alt={item.title} width="13rem" height="12rem"/>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+  useEffect(() => {
+    if (swiper.current !== null) swiper.current.slideTo(swiperIndex);
+  }, [swiperIndex, songsList]);
+
+  const swiperHandler = (item: any, index: number) => {
+    setSongIndex(index);
+    setCurrentSong(item);
+  };
+
+  return (
+    <div className="swiper">
+      <div className="swiper-container">
+        <div className="swiper-wrapper">
+          {getError() || getLoading() || !songs.length ? (
+            <Spinner />
+          ) : (
+            songs.map((item: any, i: number) => {
+              return (
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="swiper-slide"
+                  key={i}
+                  onClick={() => swiperHandler(item, i)}
+                  onKeyPress={() => ({})}>
+                  <div>{textFormatter(item.title)}</div>
+                  <div>
+                    <img src={item.coverBig} alt={item.title} width="13rem" height="12rem" />
+                  </div>
                 </div>
-                <div className="swiper-button-prev"></div>
-                <div className="swiper-button-next"></div>
-                <div className="swiper-scrollbar"></div>
-            </div>
+              );
+            })
+          )}
         </div>
-    );
-}   
+        <div className="swiper-button-prev" />
+        <div className="swiper-button-next" />
+        <div className="swiper-scrollbar" />
+      </div>
+    </div>
+  );
+}
 
 export default Slider;

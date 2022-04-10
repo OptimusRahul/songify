@@ -24,9 +24,9 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const lightMode = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,    
+    flexGrow: 1,
     background: '#ececec',
-    padding: '10px 5px',    
+    padding: '10px 5px'
   },
   paper: {
     margin: '0 8px',
@@ -40,23 +40,27 @@ const lightMode = makeStyles((theme) => ({
   }
 }));
 
-const Container = ()  => {
-  
+const Container = () => {
   const { fetchSongs, favoriteSongsPlaylist, recentSongsPlaylist } = useContext(SongsContext);
   const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
-    right: false,
+    right: false
   });
 
-  const toggleDrawer = (anchor: Anchor, open: boolean) => ( event: React.KeyboardEvent | React.MouseEvent ) => {
-    if ( event && event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
-
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+      setState({ ...state, [anchor]: open });
+    };
 
   const classes = lightMode();
 
@@ -66,63 +70,84 @@ const Container = ()  => {
     recentSongsPlaylist();
   }, [fetchSongs, favoriteSongsPlaylist, recentSongsPlaylist]);
 
-
   const renderSearchComponent = (close: any) => {
-    return (<Search onClose={close}/>);
-  }
+    return <Search onClose={close} />;
+  };
 
-  const renderMobileViewComponents: Function = (direction: Anchor, iconType: any , componentName: string, component: React.FC) => {
+  const renderMobileViewComponents: Function = (
+    direction: Anchor,
+    iconType: any,
+    componentName: string,
+    component: React.FC
+  ) => {
     return (
       <div className={`landscape--${componentName}Btn`}>
-        <div className="music--icon">
-            {iconType}
-        </div>
+        <div className="music--icon">{iconType}</div>
         <SwipeableDrawer
-            anchor={direction}
-            open={state[direction]}
-            onClose={toggleDrawer(direction, false)}
-            onOpen={toggleDrawer(direction, true)} 
-            style={{ background: "#ececec" }}> 
-            {component}
+          anchor={direction}
+          open={state[direction]}
+          onClose={toggleDrawer(direction, false)}
+          onOpen={toggleDrawer(direction, true)}
+          style={{ background: '#ececec' }}
+        >
+          {component}
         </SwipeableDrawer>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={classes.root}>
-        <Grid container>
-            <Grid className="menu--list" item xs={2}>
-                <Paper className={classes.paper}>
-                    <Menu onClose={() => {}}/>
-                </Paper>
-            </Grid>
-            <Grid item xs={6} className="menu--container">
-                <Paper className={classes.paper}>
-                    <div className="landscape--search">
-                      {renderSearchComponent(()=>{})}
-                    </div>
-                    <Slider />
-                      <div className="landscape--player">
-                        <Player onClose={() => {}}/>
-                      </div>
-                </Paper>
-                
-                {renderMobileViewComponents('top', <AlbumIcon onClick={toggleDrawer('top', true)} />, 'music', <Player onClose={toggleDrawer('top', false)}/> )}
-                {renderMobileViewComponents('left', <HomeIcon onClick={toggleDrawer('left', true)} />, 'menu', <Menu onClose={toggleDrawer('left', false)}/> )}
-                {renderMobileViewComponents('bottom', <SearchIcon onClick={toggleDrawer('bottom', true)} display="flex"/>, 'search', <Search onClose={toggleDrawer('bottom', false)} /> )}
-                {renderMobileViewComponents('right', <QueueMusicIcon onClick={toggleDrawer('right', true)} /> , 'list', <List onClose={toggleDrawer('right', false)}/>)}
-
-                <Navigation />
-            </Grid>
-            <Grid className="songs--list" item xs={4}>
-                <Paper className={classes.paper}>
-                  <List onClose={() => {}} /> 
-                </Paper>
-            </Grid>
+      <Grid container>
+        <Grid className="menu--list" item xs={2}>
+          <Paper className={classes.paper}>
+            <Menu onClose={() => {}} />
+          </Paper>
         </Grid>
+        <Grid item xs={6} className="menu--container">
+          <Paper className={classes.paper}>
+            <div className="landscape--search">{renderSearchComponent(() => {})}</div>
+            <Slider />
+            <div className="landscape--player">
+              <Player onClose={() => {}} />
+            </div>
+          </Paper>
+
+          {renderMobileViewComponents(
+            'top',
+            <AlbumIcon onClick={toggleDrawer('top', true)} />,
+            'music',
+            <Player onClose={toggleDrawer('top', false)} />
+          )}
+          {renderMobileViewComponents(
+            'left',
+            <HomeIcon onClick={toggleDrawer('left', true)} />,
+            'menu',
+            <Menu onClose={toggleDrawer('left', false)} />
+          )}
+          {renderMobileViewComponents(
+            'bottom',
+            <SearchIcon onClick={toggleDrawer('bottom', true)} display="flex" />,
+            'search',
+            <Search onClose={toggleDrawer('bottom', false)} />
+          )}
+          {renderMobileViewComponents(
+            'right',
+            <QueueMusicIcon onClick={toggleDrawer('right', true)} />,
+            'list',
+            <List onClose={toggleDrawer('right', false)} />
+          )}
+
+          <Navigation />
+        </Grid>
+        <Grid className="songs--list" item xs={4}>
+          <Paper className={classes.paper}>
+            <List onClose={() => {}} />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
-}
+};
 
 export default Container;

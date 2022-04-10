@@ -6,11 +6,11 @@
   height: 11em;
   border-radius: 50%;
   background: #851414;
-  background: -moz-linear-gradient(left, #851414 10%, rgba(133,20,20, 0) 42%);
-  background: -webkit-linear-gradient(left, #851414 10%, rgba(133,20,20, 0) 42%);
-  background: -o-linear-gradient(left, #851414 10%, rgba(133,20,20, 0) 42%);
-  background: -ms-linear-gradient(left, #851414 10%, rgba(133,20,20, 0) 42%);
-  background: linear-gradient(to right, #851414 10%, rgba(133,20,20, 0) 42%);
+  background: -moz-linear-gradient(left, #851414 10%, rgba(133, 20, 20, 0) 42%);
+  background: -webkit-linear-gradient(left, #851414 10%, rgba(133, 20, 20, 0) 42%);
+  background: -o-linear-gradient(left, #851414 10%, rgba(133, 20, 20, 0) 42%);
+  background: -ms-linear-gradient(left, #851414 10%, rgba(133, 20, 20, 0) 42%);
+  background: linear-gradient(to right, #851414 10%, rgba(133, 20, 20, 0) 42%);
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
   animation: load3 1.4s infinite linear;
@@ -64,4 +64,4 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
-}  
+}
